@@ -1,0 +1,51 @@
+/** General Styles **/
+.path-mod-planner .printicon,.path-mod-print .printicon {
+    background: url([[pix:t/print]]) no-repeat scroll 2px center transparent;
+    /*rtl:ignore*/
+    padding-left: 20px;
+}
+
+#page-mod-print-print .displayprinticon,
+#page-mod-print-print .displaydate {
+    text-align: right;
+    font-size: 0.75em;
+}
+
+#page-mod-print-print .strong {
+    font-weight: 700;
+}
+
+#page-mod-print-print h4 {
+    font-weight: 700;
+}
+
+.form-autocomplete-suggestions li[data-value="0"],#fitem_id_activitycmid .form-autocomplete-suggestions li:nth-child(1),#fitem_id_templateid .form-autocomplete-suggestions li:nth-child(1){
+    display:none !important;
+}
+#dashboard{
+    min-height:auto;
+}
+
+#fitem_id_stepname_0 .ml-1.ml-md-auto.d-flex.align-items-center.align-self-start,#fitem_id_stepallocation_0 .ml-1.ml-md-auto.d-flex.align-items-center.align-self-start{
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+    margin-right: .5rem;
+    font: normal normal normal 14px/1 FontAwesome;
+    color: #ca3120!important;
+}
+#fitem_id_stepname_0 .ml-1.ml-md-auto.d-flex.align-items-center.align-self-start:before,#fitem_id_stepallocation_0 .ml-1.ml-md-auto.d-flex.align-items-center.align-self-start:before {
+    content: "\f06a";
+    
+}
+
+#page-mod-print-print{
+    height: auto;
+}
+
+#fitem_id_stepname_0 .btn-link{
+    display:none;
+}
