@@ -23,6 +23,10 @@
     display:none !important;
 }
 
+.felement .form-autocomplete-selection:focus {
+    box-shadow: none;
+}
+
 .felement .form-autocomplete-suggestions {
     min-width: 200px;
 }
