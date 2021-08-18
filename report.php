@@ -218,10 +218,12 @@ if ($plannersteps) {
             JOIN {planner_step} ps ON (ps.id = pus.stepid) WHERE ps.plannerid = '".$planner->id."'
             AND pus.userid = '".$studentdata->id."' ORDER BY pus.stepid ASC");
             $data = array();
+            $params = array('id' => $studentdata->id);
+            $params['course'] = $course->id;
             if ($studentdata->idnumber) {
                 $data[] = fullname($studentdata).'<br/>('.$studentdata->idnumber.')';
             } else {
-                $data[] = fullname($studentdata);
+                $data[] = \html_writer::link(new \moodle_url("/user/view.php", $params), fullname($studentdata));
             }
             $data[] = $studentdata->email;
             foreach ($getusersteps as $step) {
