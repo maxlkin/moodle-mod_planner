@@ -106,13 +106,20 @@ class mod_planner_mod_form extends moodleform_mod {
         if ($this->_cm) {
             $whereplanner = "WHERE p.id != ".$cm->instance;
         }
-        $existcmids = $DB->get_records_sql("SELECT p.activitycmid FROM {planner} p
-        JOIN {course_modules} cm ON (cm.instance = p.id ) JOIN {modules} m ON
-            (m.id = cm.module AND m.name = 'planner') $whereplanner");
-        if ($existcmids) {
-            foreach ($existcmids as $cmid) {
-                if (array_key_exists($cmid->activitycmid, $activitynames)) {
-                    unset($activitynames[$cmid->activitycmid]);
+
+        $newplanner = $DB->get_records_sql("SELECT p.id, p.activitycmid, p.name FROM {planner} p $whereplanner ");
+        $modinfo = get_fast_modinfo($course);
+
+        if ($newplanner) {
+            foreach ($newplanner as $cmid) {
+                foreach ($modinfo->instances as $modulename => $modinstances) {
+                    foreach ($modinstances as $cm) {
+                        if (($cm->modname == 'planner' && $cm->deletioninprogress == 0)
+                        && (array_key_exists($cmid->activitycmid, $activitynames) && $cm->name == $cmid->name) 
+                        || ($cm->id == $cmid->activitycmid && $cm->deletioninprogress == 1) ) {
+                            unset($activitynames[$cmid->activitycmid]);
+                        }
+                    }
                 }
             }
         }
