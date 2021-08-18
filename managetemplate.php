@@ -30,7 +30,7 @@ $cid = optional_param('cid', 0, PARAM_INT);
 
 if ($cid) {
     if (! $course = $DB->get_record("course", array("id" => $cid))) {
-        print_error('coursemisconf');
+        throw new moodle_exception('coursemisconf');
     }
     require_login($course);
     $context = context_course::instance($course->id);
@@ -53,7 +53,7 @@ $templatedata = array();
 $templatestepdata = array();
 if ($id) {
     if (!$templatedata = $DB->get_record('plannertemplate', array('id' => $id))) {
-        print_error('invalidtemplate', 'planner');
+        throw new moodle_exception('invalidtemplate', 'planner');
     }
     $templatestepdata = $DB->get_records_sql("SELECT * FROM {plannertemplate_step} WHERE plannerid = '".$id."' ORDER BY id ASC");
 }

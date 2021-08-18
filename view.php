@@ -30,31 +30,31 @@ $action = optional_param('action', '', PARAM_RAW);
 if ($id) {
     $PAGE->set_url('/mod/planner/view.php', array('id' => $id));
     if (! $cm = get_coursemodule_from_id('planner', $id)) {
-        print_error('invalidcoursemodule');
+        throw new moodle_exception('invalidcoursemodule');
     }
 
     if (! $course = $DB->get_record("course", array("id" => $cm->course))) {
-        print_error('coursemisconf');
+        throw new moodle_exception('coursemisconf');
     }
 
     if (! $planner = $DB->get_record("planner", array("id" => $cm->instance))) {
-        print_error('invalidplanner', 'planner');
+        throw new moodle_exception('invalidplanner', 'planner');
     }
 
     if (! $planner->activitycmid) {
-        print_error('actionnotassociated', 'planner');
+        throw new moodle_exception('actionnotassociated', 'planner');
     }
 
 } else {
     $PAGE->set_url('/mod/planner/view.php', array('l' => $l));
     if (! $planner = $DB->get_record("planner", array("id" => $l))) {
-        print_error('invalidcoursemodule');
+        throw new moodle_exception('invalidcoursemodule');
     }
     if (! $course = $DB->get_record("course", array("id" => $planner->course))) {
-        print_error('coursemisconf');
+        throw new moodle_exception('coursemisconf');
     }
     if (! $cm = get_coursemodule_from_instance("planner", $planner->id, $course->id)) {
-        print_error('invalidcoursemodule');
+        throw new moodle_exception('invalidcoursemodule');
     }
 }
 
@@ -63,7 +63,7 @@ $cminfoactivity = $DB->get_record_sql("SELECT cm.id,cm.instance,cm.module,m.name
 if ($cminfoactivity) {
     $modulename = $DB->get_record($cminfoactivity->name, array('id' => $cminfoactivity->instance));
 } else {
-    print_error('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
+    throw new moodle_exception('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
 }
 
 require_login($course, true, $cm);

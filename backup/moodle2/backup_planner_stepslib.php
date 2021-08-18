@@ -37,7 +37,7 @@ class backup_planner_activity_structure_step extends backup_activity_structure_s
             $exisingplanner = $DB->get_record('planner', array ('id' => $this->task->get_activityid()));
 
             $cminfoactivity = $DB->get_record_sql("SELECT cm.id,cm.instance,cm.module,m.name FROM {course_modules} cm
-     JOIN {modules} m ON (m.id = cm.module) WHERE cm.id = '".$exisingplanner->activitycmid."'");
+        JOIN {modules} m ON (m.id = cm.module) WHERE cm.id = '".$exisingplanner->activitycmid."'");
             if ($cminfoactivity) {
                 if (!$this->get_setting_value($cminfoactivity->name.'_'.$cminfoactivity->id.'_included')) {
                     throw new backup_step_exception('planner_linked_activity_not_included');

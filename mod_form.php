@@ -74,14 +74,15 @@ class mod_planner_mod_form extends moodleform_mod {
                 $cminfoactivity = $DB->get_record_sql("SELECT cm.id,cm.instance,cm.module,m.name FROM {course_modules} cm
  JOIN {modules} m ON (m.id = cm.module) WHERE cm.id = '".$planner->activitycmid."'");
                 if (!$cminfoactivity) {
-                    print_error('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
+                    throw new moodle_exception('relatedactivitynotexistdelete', 'planner',
+                        new moodle_url("/course/view.php?id=$planner->course"));
                 }
                 $templatestepdata = $DB->get_records_sql("SELECT * FROM {planner_step}
                 WHERE plannerid = '".$templateid."' ORDER BY id ASC");
                 $mform->setDefault('disclaimer', array('text' => $planner->disclaimer));
             }
-        } 
-        
+        }
+
         $assignments = $DB->get_records_sql("SELECT cm.id,a.name FROM {assign} a
         JOIN {course_modules} cm ON (cm.instance = a.id AND cm.module = (SELECT id FROM {modules} WHERE name = 'assign'))
         WHERE a.course = '".$course->id."' AND cm.visible = 1 AND (a.allowsubmissionsfromdate != 0 AND a.duedate != 0)");
@@ -106,7 +107,8 @@ class mod_planner_mod_form extends moodleform_mod {
             $whereplanner = "WHERE p.id != ".$cm->instance;
         }
         $existcmids = $DB->get_records_sql("SELECT p.activitycmid FROM {planner} p
-        JOIN {course_modules} cm ON (cm.instance = p.id ) JOIN {modules} m ON (m.id = cm.module AND m.name = 'planner') $whereplanner");
+        JOIN {course_modules} cm ON (cm.instance = p.id ) JOIN {modules} m ON
+            (m.id = cm.module AND m.name = 'planner') $whereplanner");
         if ($existcmids) {
             foreach ($existcmids as $cmid) {
                 if (array_key_exists($cmid->activitycmid, $activitynames)) {
@@ -124,7 +126,7 @@ class mod_planner_mod_form extends moodleform_mod {
         if ($activitycmid) {
             $mform->setDefault('activitycmid', $activitycmid);
         }
-        
+
         if (!$this->_cm) {
             $admins = get_admins();
             $isadmin = false;
@@ -152,7 +154,7 @@ class mod_planner_mod_form extends moodleform_mod {
                 'noselectionstring' => get_string('selecttemplate', 'planner'),
                 'onchange' => 'this.form.submit()'
             );
-            
+
             $mform->disable_form_change_checker();
             $mform->addElement('autocomplete', 'templateid', get_string('template', 'planner'), $templates, $options);
             $mform->addRule('templateid', $strrequired, 'required', null, 'server');
@@ -193,12 +195,12 @@ class mod_planner_mod_form extends moodleform_mod {
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
     }
-    
-    function definition_after_data(){
+
+    public function definition_after_data() {
         $mform = $this->_form;
         $mform->validate();
     }
-    
+
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         if ((isset($data['submitbutton2'])) OR (isset($data['submitbutton']))) {

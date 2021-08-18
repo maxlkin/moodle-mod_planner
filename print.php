@@ -29,13 +29,13 @@ $url = new moodle_url('/mod/print/print.php', array('id' => $id));
 
 $PAGE->set_url($url);
 if (! $cm = get_coursemodule_from_id('planner', $id)) {
-    print_error('invalidcoursemodule');
+    throw new moodle_exception('invalidcoursemodule');
 }
 if (! $course = $DB->get_record("course", array("id" => $cm->course))) {
-    print_error('coursemisconf');
+    throw new moodle_exception('coursemisconf');
 }
 if (! $planner = $DB->get_record("planner", array("id" => $cm->instance))) {
-    print_error('invalidid', 'planner');
+    throw new moodle_exception('invalidid', 'planner');
 }
 
 $cminfoactivity = $DB->get_record_sql("SELECT cm.id,cm.instance,cm.module,m.name FROM {course_modules} cm
@@ -43,7 +43,7 @@ $cminfoactivity = $DB->get_record_sql("SELECT cm.id,cm.instance,cm.module,m.name
 if ($cminfoactivity) {
     $modulename = $DB->get_record($cminfoactivity->name, array('id' => $cminfoactivity->instance));
 } else {
-    print_error('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
+    throw new moodle_exception('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
 }
 
 $templatestepdata = $DB->get_records_sql("SELECT * FROM {planner_step} WHERE plannerid = '".$planner->id."' ORDER BY id ASC");

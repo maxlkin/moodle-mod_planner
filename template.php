@@ -33,7 +33,7 @@ $cid           = optional_param('cid', 0, PARAM_INT);
 
 if ($cid) {
     if (! $course = $DB->get_record("course", array("id" => $cid))) {
-        print_error('coursemisconf');
+        throw new moodle_exception('coursemisconf');
     }
     require_login($course);
     $context = context_course::instance($course->id);
@@ -197,9 +197,9 @@ if (!$isadmin) {
     $whereteacher = "((pt.userid = '".$USER->id."' AND pt.personal = 1) OR (pt.personal = 0))";
 }
 if ($searchclauses) {
-    $wheres[] =$DB->sql_like('name', ':search1', false, false);
-    $wheres[] =$DB->sql_like('firstname', ':search2', false, false);
-    $wheres[] =$DB->sql_like('lastname', ':search3', false, false);
+    $wheres[] = $DB->sql_like('name', ':search1', false, false);
+    $wheres[] = $DB->sql_like('firstname', ':search2', false, false);
+    $wheres[] = $DB->sql_like('lastname', ':search3', false, false);
     $params['search1'] = "%$searchclauses%";
     $params['search2'] = "%$searchclauses%";
     $params['search3'] = "%$searchclauses%";

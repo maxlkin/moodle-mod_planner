@@ -69,7 +69,7 @@ function planner_add_instance($planner) {
         redirect($url);
     }
     if ($planner->activitycmid == 0) {
-        print_error('actionnotassociated', 'planner');
+        throw new moodle_exception('actionnotassociated', 'planner');
     }
     if ($planner->disclaimer) {
         $planner->disclaimer = $planner->disclaimer['text'];
@@ -81,7 +81,8 @@ function planner_add_instance($planner) {
     if ($cminfoactivity) {
         $modulename = $DB->get_record($cminfoactivity->name, array('id' => $cminfoactivity->instance));
     } else {
-        print_error('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
+        throw new moodle_exception('relatedactivitynotexistdelete', 'planner',
+            new moodle_url("/course/view.php?id=$planner->course"));
     }
     if ($cminfoactivity->name == 'assign') {
         $planner->timeopen = $modulename->allowsubmissionsfromdate;
