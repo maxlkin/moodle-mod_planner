@@ -117,11 +117,20 @@ class mod_planner_mod_form extends moodleform_mod {
             }
         }
 
-        $options = array(
+        $enabledoptions = array(
             'multiple' => false,
             'noselectionstring' => get_string('selectactivity', 'planner')
         );
-        $mform->addElement('autocomplete', 'activitycmid', get_string('selectactivity', 'planner'), $activitynames, $options);
+        $disabledoptions = array(
+            'disabled' => 'disabled',
+            'style' => 'width:200px; background:none;'
+        );
+        if(count($activitynames) > 1) {
+            $mform->addElement('autocomplete', 'activitycmid', get_string('selectactivity', 'planner'), $activitynames, $enabledoptions);
+        } else {
+            $activitynames[0] = "No activities";
+            $mform->addElement('select', 'activitycmid', get_string('selectactivity', 'planner'), $activitynames, $disabledoptions);
+        }
         $mform->addRule('activitycmid', $strrequired, 'required', null, 'server');
         if ($activitycmid) {
             $mform->setDefault('activitycmid', $activitycmid);
@@ -149,14 +158,23 @@ class mod_planner_mod_form extends moodleform_mod {
                     $templates[$id] = $template->name;
                 }
             }
-            $options = array(
+            
+            $enabledoptions = array(
                 'multiple' => false,
                 'noselectionstring' => get_string('selecttemplate', 'planner'),
                 'onchange' => 'this.form.submit()'
             );
-
+            $disabledoptions = array(
+                'disabled' => 'disabled',
+                'style' => 'width:200px; background:none;'
+            );
             $mform->disable_form_change_checker();
-            $mform->addElement('autocomplete', 'templateid', get_string('template', 'planner'), $templates, $options);
+            if(count($templates) > 1) {
+                $mform->addElement('autocomplete', 'templateid', get_string('template', 'planner'), $templates, $enabledoptions);
+            } else {
+                $templates[0] = "No templates";
+                $mform->addElement('select', 'templateid', get_string('template', 'planner'), $templates, $disabledoptions);
+            }
             $mform->addRule('templateid', $strrequired, 'required', null, 'server');
             if ($templateid) {
                 $mform->setDefault('templateid', $templateid);
