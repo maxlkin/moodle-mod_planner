@@ -78,6 +78,14 @@ if ($cminfoactivity) {
     $modulename = $DB->get_record($cminfoactivity->name, array('id' => $cminfoactivity->instance));
 }
 
+$modinfo = get_fast_modinfo($course);
+foreach ($modinfo->instances as $modulename => $modinstances) {
+    foreach ($modinstances as $cm) { 
+        if($cm->id == $planner->activitycmid){
+            $cmname = $cm->name;
+        }
+    }
+}
 $plannersteps = $DB->count_records('planner_step', array('plannerid' => $planner->id));
 
 $coursecontext = context_course::instance($course->id);
@@ -124,7 +132,7 @@ if ($format) {
     require_once("{$CFG->libdir}/csvlib.class.php");
 
     $export = new csv_export_writer();
-    $export->set_filename(format_string($planner->name));
+    $export->set_filename(format_string($planner->name)."_". $cmname);
     $row = array();
     $row[] = get_string('studentname', 'planner');
     $row[] = get_string('email', 'planner');
