@@ -22,6 +22,15 @@
 .form-autocomplete-suggestions li[data-value="0"],#fitem_id_activitycmid .form-autocomplete-suggestions li:nth-child(1),#fitem_id_templateid .form-autocomplete-suggestions li:nth-child(1){
     display:none !important;
 }
+
+.felement .form-autocomplete-suggestions {
+    min-width: 200px;
+}
+
+.felement .d-md-inline-block .form-control {
+    width: 200px;
+}
+
 #dashboard{
     min-height:auto;
 }
