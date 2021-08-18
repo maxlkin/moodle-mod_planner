@@ -314,7 +314,7 @@ if (has_capability('mod/planner:manageplanner', $context)) {
     }
     $i = 1;
     foreach ($templatestepdata as $stepdata) {
-        $html .= '<h3 class="">'.get_string('task', 'planner').' '.$i.' - '.$stepdata->name.'
+        $html .= '<h3 class="">'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
         <span style="float:right">'.get_string('enddate', 'planner').' : '
         .userdate($stepsdata[$stepdata->id]['timedue'], get_string('strftimedatefullshort')).' ';
         $html .= '</span></h3>';
@@ -330,7 +330,7 @@ if (has_capability('mod/planner:manageplanner', $context)) {
         $html .= '<div id="accordion">';
         $i = 1;
         foreach ($templateuserstepdata as $stepdata) {
-            $html .= '<h3 class="">'.get_string('task', 'planner').' '.$i.' - '.$stepdata->name.'
+            $html .= '<h3 class="">'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
             <span style="float:right">'.get_string('enddate', 'planner').' : '
             .userdate($stepdata->duedate, get_string('strftimedatefullshort')).' ';
             if ($stepdata->completionstatus == '1') {

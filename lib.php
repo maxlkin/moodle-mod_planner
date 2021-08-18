@@ -365,7 +365,7 @@ function planner_cm_info_view(cm_info $cm) {
             if ($completed) {
                 $userhtml = '<br/>'.get_string('alltaskscompleted', 'planner');
             } else {
-                $userhtml = '<br/>'.get_string('task', 'planner').' '.$i.' - ';
+                $userhtml = '<br/>'.get_string('step', 'planner').' '.$i.' - ';
                 $currenttime = time();
                 if ($duetime >= $currenttime) {
                     $datediff = $duetime - $currenttime;

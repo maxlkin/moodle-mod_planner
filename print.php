@@ -159,7 +159,7 @@ if (has_capability('mod/planner:manageplanner', $context)) {
 
     $i = 1;
     foreach ($templatestepdata as $stepdata) {
-        $adminprint .= '<h4 class="">'.get_string('task', 'planner').' '.$i.' - '.$stepdata->name.'
+        $adminprint .= '<h4 class="">'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
         <span style="float:right">'.get_string('enddate', 'planner').' : '
         .userdate($stepsdata[$stepdata->id]['timedue'], get_string('strftimedatefullshort')).' ';
         $adminprint .= '</span></h4>';
@@ -172,7 +172,7 @@ if (has_capability('mod/planner:manageplanner', $context)) {
         $i = 1;
         $userprint = '';
         foreach ($templateuserstepdata as $stepdata) {
-            $userprint .= '<h4>'.get_string('task', 'planner').' '.$i.' - '.$stepdata->name.'
+            $userprint .= '<h4>'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
             <span style="float:right">'.get_string('enddate', 'planner').' : '
             .userdate($stepdata->duedate, get_string('strftimedatefullshort')).' ';
             if ($stepdata->completionstatus == '1') {
