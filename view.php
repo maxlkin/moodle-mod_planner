@@ -59,12 +59,20 @@ if ($id) {
 }
 
 $cminfoactivity = $DB->get_record_sql("SELECT cm.id,cm.instance,cm.module,m.name FROM {course_modules} cm
- JOIN {modules} m ON (m.id = cm.module) WHERE cm.id = '".$planner->activitycmid."'");
-if ($cminfoactivity) {
-    $modulename = $DB->get_record($cminfoactivity->name, array('id' => $cminfoactivity->instance));
-} else {
-    throw new moodle_exception('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
+JOIN {modules} m ON (m.id = cm.module) WHERE cm.id = '".$planner->activitycmid."'");
+
+$modinfo = get_fast_modinfo($course);
+foreach ($modinfo->instances as $modname => $modinstances) {
+    foreach ($modinstances as $cmnew) {
+        if($cmnew->deletioninprogress == 0 && $cmnew->id == $planner->activitycmid) {
+            $modulename = $DB->get_record($cminfoactivity->name, array('id' => $cminfoactivity->instance));
+        } else if($cmnew->deletioninprogress == 1 && $cmnew->id == $planner->activitycmid){
+            throw new moodle_exception('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
+        }
+    }
 }
+
+
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
