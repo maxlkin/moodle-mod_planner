@@ -44,13 +44,13 @@ class search extends \moodleform {
         $mform = $this->_form;
         $cid = $this->_customdata['cid'];
 
-        // By default just show the 'setting' field.
-        $mform->addElement('text', 'setting', get_string('search'));
-        $mform->setType('setting', PARAM_TEXT);
-
         $mform->addElement('hidden', 'cid', $cid);
-        $mform->settype('cid', PARAM_INT);
+        $mform->setType('cid', PARAM_INT);
 
-        $this->add_action_buttons(false, get_string('search'));
+        // By default just show the 'setting' field.
+        $group[] =& $mform->createElement('text', 'setting', get_string('search'));
+        $group[] =& $mform->createElement('submit', get_string('search'), 'Submit');
+        $mform->addGroup($group, 'searchgroup', get_string('search'));
+        $mform->setType('searchgroup[setting]', PARAM_TEXT);
     }
 }

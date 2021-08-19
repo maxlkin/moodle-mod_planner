@@ -46,7 +46,7 @@ if ($cid) {
     require_login(0, false);
     admin_externalpage_setup('planner/template');
 }
-$mform = new \mod_planner\form\search('', array('cid' => $cid));
+$mform = new \mod_planner\form\search(null, array('cid' => $cid));
 
 /** @var cache_session $cache */
 $cache = cache::make_from_params(cache_store::MODE_SESSION, 'mod_planner', 'search');
@@ -59,8 +59,8 @@ $searchclauses = '';
 // Check if we have a form submission, or a cached submission.
 $data = ($mform->is_submitted() ? $mform->get_data() : fullclone($cachedata));
 if ($data instanceof stdClass) {
-    if (!empty($data->setting)) {
-        $searchclauses = $data->setting;
+    if (!empty($data->searchgroup['setting'])) {
+        $searchclauses = $data->searchgroup['setting'];
     }
     // Cache form submission so that it is preserved while paging through the report.
     unset($data->submitbutton);
@@ -130,11 +130,12 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('manage_templates', 'planner'));
 echo $OUTPUT->box_start('generalbox');
 
+echo "<div style=display:inline-flex; class=plannerformlayout>";
 echo $OUTPUT->single_button(new moodle_url('/mod/planner/managetemplate.php',
  array('cid' => $cid)), get_string('addtemplate', 'planner'));
 
 $mform->display();
-
+echo "</div>";
 $tablecolumns = array();
 $tableheaders = array();
 $tablecolumns[] = 'name';
