@@ -22,7 +22,7 @@ require_once($CFG->dirroot.'/lib/formslib.php');
 
 /**
  * Planner module version info
- * 
+ *
  * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
  * @package mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

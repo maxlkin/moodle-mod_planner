@@ -121,7 +121,7 @@ class mod_planner_mod_form extends moodleform_mod {
                 foreach ($modinfo->instances as $modulename => $modinstances) {
                     foreach ($modinstances as $cm) {
                         if (($cm->modname == 'planner' && $cm->deletioninprogress == 0)
-                        && (array_key_exists($cmid->activitycmid, $activitynames) && $cm->name == $cmid->name) 
+                        && (array_key_exists($cmid->activitycmid, $activitynames) && $cm->name == $cmid->name)
                         || ($cm->id == $cmid->activitycmid && $cm->deletioninprogress == 1) ) {
                             unset($activitynames[$cmid->activitycmid]);
                         }
@@ -140,11 +140,13 @@ class mod_planner_mod_form extends moodleform_mod {
         );
         if ($checkalreadycompleted == 0 || $checkalreadycompleted == null) {
             if (count($activitynames) > 1) {
-                $mform->addElement('autocomplete', 'activitycmid', get_string('selectactivity', 'planner'), $activitynames, $enabledoptions);
+                $mform->addElement('autocomplete', 'activitycmid',
+                get_string('selectactivity', 'planner'), $activitynames, $enabledoptions);
                 $mform->addHelpButton('activitycmid', 'activitiesenabled', 'mod_planner');
             } else {
                 $activitynames[0] = "No activities";
-                $mform->addElement('select', 'activitycmid', get_string('selectactivity', 'planner'), $activitynames, $disabledoptions);
+                $mform->addElement('select', 'activitycmid',
+                get_string('selectactivity', 'planner'), $activitynames, $disabledoptions);
                 $mform->addHelpButton('activitycmid', 'activitiesdisabled', 'mod_planner');
             }
             $mform->addRule('activitycmid', $strrequired, 'required', null, 'server');
@@ -186,7 +188,7 @@ class mod_planner_mod_form extends moodleform_mod {
                 'style' => 'width:200px; background:none;'
             );
             $mform->disable_form_change_checker();
-            if(count($templates) > 1) {
+            if (count($templates) > 1) {
                 $mform->addElement('autocomplete', 'templateid', get_string('template', 'planner'), $templates, $enabledoptions);
                 $mform->addHelpButton('templateid', 'templatesenabled', 'mod_planner');
             } else {
@@ -232,7 +234,7 @@ class mod_planner_mod_form extends moodleform_mod {
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
     }
-    
+
     /**
      * Moodle form validation
      *
@@ -240,7 +242,7 @@ class mod_planner_mod_form extends moodleform_mod {
      * @param array $files
      * @return array $errors
      */
-    public function validation($data, $files){
+    public function validation ($data, $files) {
         $errors = parent::validation($data, $files);
         if ((isset($data['submitbutton2'])) OR (isset($data['submitbutton']))) {
             if ($data['update'] == 0) {

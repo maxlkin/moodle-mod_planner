@@ -16,7 +16,7 @@
 
 /**
  * File for backing up the planner settings
- * 
+ *
  * @package    mod_planner
  * @subpackage backup-moodle2
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}

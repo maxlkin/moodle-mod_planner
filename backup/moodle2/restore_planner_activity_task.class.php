@@ -20,7 +20,7 @@ require_once($CFG->dirroot . '/mod/planner/backup/moodle2/restore_planner_stepsl
 
 /**
  * planner restore task that provides all the settings and steps to perform one complete restore of the activity.
- * 
+ *
  * @package    mod_planner
  * @subpackage backup-moodle2
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}

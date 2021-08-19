@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->dirroot.'/calendar/lib.php');
 
 /**
- * Returns the Planner name 
+ * Returns the Planner name
  *
  * @param object $planner
  * @return string

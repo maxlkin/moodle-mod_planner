@@ -65,10 +65,11 @@ JOIN {modules} m ON (m.id = cm.module) WHERE cm.id = '".$planner->activitycmid."
 $modinfo = get_fast_modinfo($course);
 foreach ($modinfo->instances as $modname => $modinstances) {
     foreach ($modinstances as $cmnew) {
-        if($cmnew->deletioninprogress == 0 && $cmnew->id == $planner->activitycmid) {
+        if ($cmnew->deletioninprogress == 0 && $cmnew->id == $planner->activitycmid) {
             $modulename = $DB->get_record($cminfoactivity->name, array('id' => $cminfoactivity->instance));
-        } else if($cmnew->deletioninprogress == 1 && $cmnew->id == $planner->activitycmid){
-            throw new moodle_exception('relatedactivitynotexistdelete', 'planner', new moodle_url("/course/view.php?id=$planner->course"));
+        } else if ($cmnew->deletioninprogress == 1 && $cmnew->id == $planner->activitycmid) {
+            throw new moodle_exception('relatedactivitynotexistdelete', 'planner',
+            new moodle_url("/course/view.php?id=$planner->course"));
         }
     }
 }
@@ -323,7 +324,8 @@ if (has_capability('mod/planner:manageplanner', $context)) {
     }
     $i = 1;
     foreach ($templatestepdata as $stepdata) {
-        $html .= '<h3 class="step-header">'. '<div class="stepname">' . get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
+        $html .= '<h3 class="step-header">'. '<div class="stepname">' .
+        get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
         <div class="stepdate">'.get_string('enddate', 'planner').' : '
         .userdate($stepsdata[$stepdata->id]['timedue'], get_string('strftimedatefullshort')).' ';
         $html .= '</div></h3>';
@@ -339,9 +341,10 @@ if (has_capability('mod/planner:manageplanner', $context)) {
         $html .= '<div id="accordion">';
         $i = 1;
         foreach ($templateuserstepdata as $stepdata) {
-            $html .= '<h3 class="step-header">'. '<div class="stepname">' . get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
-        <div class="stepdate">'.get_string('enddate', 'planner').' : '
-        .userdate($stepdata->duedate, get_string('strftimedatefullshort')).' ';
+            $html .= '<h3 class="step-header">'. '<div class="stepname">' .
+            get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
+            <div class="stepdate">'.get_string('enddate', 'planner').' : '
+            .userdate($stepdata->duedate, get_string('strftimedatefullshort')).' ';
             if ($stepdata->completionstatus == '1') {
                 $html .= $OUTPUT->pix_icon('i/checked', 'Completed');
             }

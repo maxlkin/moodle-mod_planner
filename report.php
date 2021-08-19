@@ -81,8 +81,8 @@ if ($cminfoactivity) {
 
 $modinfo = get_fast_modinfo($course);
 foreach ($modinfo->instances as $modulename => $modinstances) {
-    foreach ($modinstances as $cm) { 
-        if($cm->id == $planner->activitycmid){
+    foreach ($modinstances as $cm) {
+        if ($cm->id == $planner->activitycmid) {
             $cmname = $cm->name;
         }
     }

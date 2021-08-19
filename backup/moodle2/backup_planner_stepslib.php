@@ -16,7 +16,7 @@
 
 /**
  * Define all the backup steps that will be used by the backup_planner_activity_task,
- * 
+ *
  * @package    mod_planner
  * @subpackage backup-moodle2
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}

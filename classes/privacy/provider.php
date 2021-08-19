@@ -68,9 +68,9 @@ class provider implements
                 'timecreated'       => 'privacy:metadata:planner_template:timecreated',
                 'timemodified'      => 'privacy:metadata:planner_template:timemodified',
             ];
-        $collection->add_database_table('planner_userstep', $planneruserstep, 'privacy:metadata:planner_userstep');
-        $collection->add_database_table('planner_template', $plannertemplate, 'privacy:metadata:planner_template');
-        return $collection;
+            $collection->add_database_table('planner_userstep', $planneruserstep, 'privacy:metadata:planner_userstep');
+            $collection->add_database_table('planner_template', $plannertemplate, 'privacy:metadata:planner_template');
+            return $collection;
     }
 
     /**
