@@ -13,12 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-/**
- * Search area for mod_planner activities.
- *
- * @package    mod_planner
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 
 namespace mod_planner\search;
 
@@ -30,6 +24,7 @@ defined('MOODLE_INTERNAL') || die();
  * Although there is no name field the intro value is stored internally, so no need
  * to overwrite self::get_document.
  *
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
  * @package    mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

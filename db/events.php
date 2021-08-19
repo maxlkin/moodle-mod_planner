@@ -15,9 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Add event handlers for the assign
+ * Add event handlers for the planner
  *
- * @package    mod_assign
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
+ * @package    mod_planner
  * @category   event
  * @copyright  2016 Ilya Tregubov
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

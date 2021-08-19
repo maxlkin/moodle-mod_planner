@@ -17,6 +17,7 @@
 /**
  * Library of functions and constants for module planner
  *
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
  * @package mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,6 +26,8 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->dirroot.'/calendar/lib.php');
 
 /**
+ * Returns the Planner name 
+ *
  * @param object $planner
  * @return string
  */
@@ -38,7 +41,6 @@ function get_planner_name($planner) {
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @global object
  * @param object $planner
  * @return bool|int
  */
@@ -133,7 +135,6 @@ function planner_add_instance($planner) {
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @global object
  * @param object $planner
  * @return bool
  */
@@ -214,7 +215,6 @@ function planner_update_instance($planner) {
  * this function will permanently delete the instance
  * and any data that depends on it.
  *
- * @global object
  * @param int $id
  * @return bool
  */
@@ -310,7 +310,6 @@ function mod_planner_extend_navigation_course($navigation, $course, $context) {
  * this activity in a course listing.
  * See get_array_of_activities() in course/lib.php
  *
- * @global object
  * @param object $coursemodule
  * @return cached_cm_info|null
  */
@@ -333,6 +332,12 @@ function planner_get_coursemodule_info($coursemodule) {
     return $result;
 }
 
+/**
+ * Check if the current planner being viewed has cm_info
+ *
+ * @param cm_info $cm
+ * @return void
+ */
 function planner_cm_info_view(cm_info $cm) {
     global $DB, $USER;
 
@@ -400,7 +405,16 @@ function planner_reset_userdata($data) {
     return array();
 }
 
-function planner_user_step ($planner, $userid, $starttime, $endtime) {
+/**
+ * Creates user steps for planner
+ *
+ * @param object $planner
+ * @param int $userid
+ * @param int $starttime
+ * @param int $endtime
+ * @return void
+ */
+function planner_user_step($planner, $userid, $starttime, $endtime) {
     global $DB;
 
     $templatestepdata = $DB->get_records_sql("SELECT * FROM {planner_step} WHERE plannerid = '".$planner->id."' ORDER BY id ASC");
@@ -449,6 +463,15 @@ WHERE ps.plannerid = '".$planner->id."' AND pu.userid = '".$userid."' ORDER BY p
     planner_update_events($planner, '', $userid, $stepsdata, false);
 }
 
+/**
+ * Deleting a user step for a planner
+ *
+ * @param object $planner
+ * @param int $userid
+ * @param int $starttime
+ * @param int $endtime
+ * @return void
+ */
 function planner_user_step_delete ($planner, $userid, $starttime, $endtime) {
     global $DB;
 
@@ -482,6 +505,16 @@ WHERE ps.plannerid = '".$planner->id."' AND pu.userid = '".$userid."' ORDER BY p
     planner_update_events($planner, '', $userid, $stepsdata, false);
 }
 
+/**
+ * Updates events for Planner activity
+ *
+ * @param object $planner
+ * @param null $override
+ * @param object $students
+ * @param object $stepsdata
+ * @param boolean $alluser
+ * @return void
+ */
 function planner_update_events($planner, $override = null, $students, $stepsdata, $alluser = true) {
     global $DB;
 
@@ -529,6 +562,8 @@ function planner_update_events($planner, $override = null, $students, $stepsdata
 }
 
 /**
+ * Checks the features the Planner currently supports
+ *
  * @uses FEATURE_IDNUMBER
  * @uses FEATURE_GROUPS
  * @uses FEATURE_GROUPINGS

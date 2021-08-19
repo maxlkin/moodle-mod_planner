@@ -15,21 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Define all the backup steps that will be used by the backup_planner_activity_task,
+ * 
  * @package    mod_planner
  * @subpackage backup-moodle2
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-/**
- * Define all the backup steps that will be used by the backup_planner_activity_task
- */
-
-/**
- * Define the complete planner structure for backup, with file and id annotations
- */
 class backup_planner_activity_structure_step extends backup_activity_structure_step {
 
+    /**
+     * Define the complete planner structure for backup, with file and id annotations
+     *
+     * @return void
+     */
     protected function define_structure() {
         global $DB;
 

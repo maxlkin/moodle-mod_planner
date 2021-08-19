@@ -14,20 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * @package    mod_planner
- * @subpackage backup-moodle2
- * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/planner/backup/moodle2/restore_planner_stepslib.php'); // Because it exists (must).
 
 /**
- * planner restore task that provides all the settings and steps to perform one
- * complete restore of the activity
+ * planner restore task that provides all the settings and steps to perform one complete restore of the activity.
+ * 
+ * @package    mod_planner
+ * @subpackage backup-moodle2
+ * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_planner_activity_task extends restore_activity_task {
 
@@ -74,9 +71,9 @@ class restore_planner_activity_task extends restore_activity_task {
 
     /**
      * Define the restore log rules that will be applied
-     * by the {@link restore_logs_processor} when restoring
+     * by the {@see restore_logs_processor} when restoring
      * planner logs. It must return one array
-     * of {@link restore_log_rule} objects
+     * of {@see restore_log_rule} objects
      */
     public static function define_restore_log_rules() {
         $rules = array();
@@ -89,9 +86,9 @@ class restore_planner_activity_task extends restore_activity_task {
 
     /**
      * Define the restore log rules that will be applied
-     * by the {@link restore_logs_processor} when restoring
+     * by the {@see restore_logs_processor} when restoring
      * course logs. It must return one array
-     * of {@link restore_log_rule} objects
+     * of {@see restore_log_rule} objects
      *
      * Note this rules are applied when restoring course logs
      * by the restore final task, but are defined here at

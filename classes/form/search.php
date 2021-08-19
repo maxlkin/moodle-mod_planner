@@ -14,13 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Report search form class.
- *
- * @package    mod_planner
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace mod_planner\form;
 
 defined('MOODLE_INTERNAL') || die();
@@ -30,7 +23,8 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * Report search form class.
  *
- * @package    report_configlog
+ * @copyright  2021 Brickfield Education Labs, www.brickfield.ie
+ * @package    mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class search extends \moodleform {

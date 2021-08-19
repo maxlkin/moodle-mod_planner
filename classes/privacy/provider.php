@@ -14,12 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Privacy Subsystem implementation for mod_label.
- *
- * @package    mod_planner
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 namespace mod_planner\privacy;
 
 use core_privacy\local\metadata\collection;
@@ -34,7 +28,10 @@ use core_privacy\local\request\writer;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_planner module does not store any data.
+ * Privacy Subsystem implementation for mod_planner.
+ *
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
+ * @package    mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements

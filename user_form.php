@@ -14,16 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Planner module version info
- * @package mod_planner
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    // It must be included from a Moodle page.
 }
 
 require_once($CFG->dirroot.'/lib/formslib.php');
+
+/**
+ * Planner module version info
+ * 
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
+ * @package mod_planner
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class user_form extends moodleform  {
 
     /**

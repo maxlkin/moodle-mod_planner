@@ -15,8 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'planner', language 'en', branch 'MOODLE_20_STABLE'
+ * Strings for component 'planner', language 'en'
  *
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
  * @package mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

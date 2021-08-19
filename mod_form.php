@@ -14,19 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Add planner form
- *
- * @package mod_planner
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
+/**
+ * Add planner form
+ *
+ * @package    mod_planner
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class mod_planner_mod_form extends moodleform_mod {
 
+    /**
+     * Function definition for moodle form
+     */
     public function definition() {
         global $PAGE, $DB, $USER, $course, $SESSION;
 
@@ -227,8 +229,15 @@ class mod_planner_mod_form extends moodleform_mod {
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
     }
-
-    public function validation($data, $files) {
+    
+    /**
+     * Moodle form validation
+     *
+     * @param array $data
+     * @param array $files
+     * @return array $errors
+     */
+    public function validation($data, $files){
         $errors = parent::validation($data, $files);
         if ((isset($data['submitbutton2'])) OR (isset($data['submitbutton']))) {
             if ($data['update'] == 0) {

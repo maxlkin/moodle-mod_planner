@@ -14,18 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * The mod_quiz attempt reviewed event.
- *
- * @package    mod_planner
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 namespace mod_planner\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-
-
+/**
+ * The mod_quiz attempt reviewed event.
+ *
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
+ * @package    mod_planner
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class step_updated extends \core\event\base {
 
     /**

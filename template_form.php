@@ -18,6 +18,13 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once($CFG->dirroot.'/lib/formslib.php');
+/**
+ * Templates form class for planner module
+ *
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
+ * @package mod_planner
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class template_form extends moodleform {
 
     /**
@@ -116,7 +123,7 @@ class template_form extends moodleform {
 
     /**
      * Validate the form data.
-     * @param array $usernew
+     * @param array $data
      * @param array $files
      * @return array|bool
      */

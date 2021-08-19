@@ -15,8 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * planner module upgrade
+ * Planner module upgrade
  *
+ * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
  * @package mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -43,6 +44,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Upgrades planner
+ *
+ * @param int $oldversion
+ * @return void
+ */
 function xmldb_planner_upgrade($oldversion) {
     global $CFG;
 

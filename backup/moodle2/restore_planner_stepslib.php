@@ -15,21 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Define all the restore steps that will be used by the restore_planner_activity_task
+ *
  * @package    mod_planner
  * @subpackage backup-moodle2
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-/**
- * Define all the restore steps that will be used by the restore_planner_activity_task
- */
-
-/**
- * Structure step to restore one planner activity
- */
 class restore_planner_activity_structure_step extends restore_activity_structure_step {
 
+    /**
+     * Structure step to restore one planner activity
+     *
+     * @return void
+     */
     protected function define_structure() {
 
         $paths = array();
@@ -46,6 +45,12 @@ class restore_planner_activity_structure_step extends restore_activity_structure
         return $this->prepare_activity_structure($paths);
     }
 
+    /**
+     * Process planner table for restore
+     *
+     * @param array $data
+     * @return void
+     */
     protected function process_planner($data) {
         global $DB;
 
@@ -65,6 +70,12 @@ class restore_planner_activity_structure_step extends restore_activity_structure
         $this->apply_activity_instance($newitemid);
     }
 
+    /**
+     * Process planner_step table for restore
+     *
+     * @param array $data
+     * @return void
+     */
     protected function process_planner_step($data) {
         global $DB;
 
@@ -77,6 +88,12 @@ class restore_planner_activity_structure_step extends restore_activity_structure
         $this->set_mapping('planner_step', $oldid, $newitemid);
     }
 
+    /**
+     * Process planner_step table for restore
+     *
+     * @param array $data
+     * @return void
+     */
     protected function process_planner_userstep($data) {
         global $DB;
 
@@ -90,8 +107,12 @@ class restore_planner_activity_structure_step extends restore_activity_structure
         // (child paths, file areas nor links decoder).
     }
 
+    /**
+     * Add planner related files, no need to match by itemname (just internally handled context)
+     *
+     * @return void
+     */
     protected function after_execute() {
-        // Add planner related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_planner', 'intro', null);
     }
 }
