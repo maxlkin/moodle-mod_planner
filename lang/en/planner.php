@@ -210,3 +210,16 @@ $string['deletedactivityemailsubject'] = 'Linked activity has been deleted email
 $string['deletedactivitystudentsubject'] = 'Linked activity has been deleted email notification';
 $string['changedateemailsubject'] = 'Activity date change email notification for planner';
 $string['addstepstoform'] = 'Add {no} step to the form';
+
+$string['activitiesenabled'] = 'selecting a activity';
+$string['activitiesenabled_help'] = '* Select an assignment or quiz activity for the planner.';
+
+$string['activitiesdisabled'] = 'selecting a activity';
+$string['activitiesdisabled_help'] = '* An assignment or quiz activity must exist in the course to select.';
+
+$string['templatesenabled'] = 'selecting a template';
+$string['templatesenabled_help'] = '* Select a template for the planner.';
+
+$string['templatesdisabled'] = 'selecting a template';
+$string['templatesdisabled_help'] = '* A template must exist to select.
+* To add a template, go to the administration block and click Manage Templates.';

@@ -138,13 +138,14 @@ class mod_planner_mod_form extends moodleform_mod {
             'disabled' => 'disabled',
             'style' => 'width:200px; background:none;'
         );
-
         if ($checkalreadycompleted == 0 || $checkalreadycompleted == null) {
             if (count($activitynames) > 1) {
                 $mform->addElement('autocomplete', 'activitycmid', get_string('selectactivity', 'planner'), $activitynames, $enabledoptions);
+                $mform->addHelpButton('activitycmid', 'activitiesenabled', 'mod_planner');
             } else {
                 $activitynames[0] = "No activities";
                 $mform->addElement('select', 'activitycmid', get_string('selectactivity', 'planner'), $activitynames, $disabledoptions);
+                $mform->addHelpButton('activitycmid', 'activitiesdisabled', 'mod_planner');
             }
             $mform->addRule('activitycmid', $strrequired, 'required', null, 'server');
             if ($activitycmid) {
@@ -187,9 +188,11 @@ class mod_planner_mod_form extends moodleform_mod {
             $mform->disable_form_change_checker();
             if(count($templates) > 1) {
                 $mform->addElement('autocomplete', 'templateid', get_string('template', 'planner'), $templates, $enabledoptions);
+                $mform->addHelpButton('templateid', 'templatesenabled', 'mod_planner');
             } else {
                 $templates[0] = "No templates";
                 $mform->addElement('select', 'templateid', get_string('template', 'planner'), $templates, $disabledoptions);
+                $mform->addHelpButton('templateid', 'templatesdisabled', 'mod_planner');
             }
             $mform->addRule('templateid', $strrequired, 'required', null, 'server');
             if ($templateid) {
