@@ -49,24 +49,31 @@ class provider implements
     /**
      * Return the fields which contain personal data.
      *
-     * @param collection $items a reference to the collection to use to store the metadata.
+     * @param collection $collection a reference to the collection to use to store the metadata.
      * @return collection the updated collection of metadata items.
      */
-    public static function get_metadata(collection $items) : collection {
-        $items->add_database_table(
-            'planner_userstep',
-            [
-                'stepid' => 'privacy:metadata:planner_userstep:stepid',
-                'userid' => 'privacy:metadata:planner_userstep:userid',
-                'timestart' => 'privacy:metadata:planner_userstep:timestart',
-                'duedate' => 'privacy:metadata:planner_userstep:duedate',
-                'completionstatus' => 'privacy:metadata:planner_userstep:completionstatus',
-                'timemodified' => 'privacy:metadata:planner_userstep:timemodified',
-            ],
-            'privacy:metadata:planner_userstep'
-        );
-
-        return $items;
+    public static function get_metadata(collection $collection) : collection {
+            $planneruserstep = [
+                'stepid'            => 'privacy:metadata:planner_userstep:stepid',
+                'userid'            => 'privacy:metadata:planner_userstep:userid',
+                'timestart'         => 'privacy:metadata:planner_userstep:timestart',
+                'duedate'           => 'privacy:metadata:planner_userstep:duedate',
+                'completionstatus'  => 'privacy:metadata:planner_userstep:completionstatus',
+                'timemodified'      => 'privacy:metadata:planner_userstep:timemodified',
+            ];
+            $plannertemplate = [
+                'userid'            => 'privacy:metadata:planner_template:userid',
+                'name'              => 'privacy:metadata:planner_template:name',
+                'disclaimer'        => 'privacy:metadata:planner_template:disclaimer',
+                'personal'          => 'privacy:metadata:planner_template:personal',
+                'status'            => 'privacy:metadata:planner_template:status',
+                'copied'            => 'privacy:metadata:planner_template:copied',
+                'timecreated'       => 'privacy:metadata:planner_template:timecreated',
+                'timemodified'      => 'privacy:metadata:planner_template:timemodified',
+            ];
+        $collection->add_database_table('planner_userstep', $planneruserstep, 'privacy:metadata:planner_userstep');
+        $collection->add_database_table('planner_template', $plannertemplate, 'privacy:metadata:planner_template');
+        return $collection;
     }
 
     /**
