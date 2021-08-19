@@ -145,6 +145,7 @@ $string['step'] = 'Step';
 $string['startdate'] = 'Start date';
 $string['enddate'] = 'End date';
 $string['report'] = 'Report';
+$string['reportheading'] = '{$a} Report';
 $string['studentname'] = 'Student Name';
 $string['email'] = 'Email';
 $string['stepnumber'] = 'Step {$a}';

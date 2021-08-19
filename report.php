@@ -165,7 +165,7 @@ if ($format) {
     $export->download_file();
 }
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('report', 'planner'));
+echo $OUTPUT->heading(get_string('reportheading', 'planner', $planner->name));
 echo $OUTPUT->container_start('progressoverviewmenus');
 
 $groups = groups_get_all_groups($course->id, $groupuserid);
