@@ -323,10 +323,10 @@ if (has_capability('mod/planner:manageplanner', $context)) {
     }
     $i = 1;
     foreach ($templatestepdata as $stepdata) {
-        $html .= '<h3 class="">'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
-        <span style="float:right">'.get_string('enddate', 'planner').' : '
+        $html .= '<h3 class="step-header">'. '<div class="stepname">' . get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
+        <div class="stepdate">'.get_string('enddate', 'planner').' : '
         .userdate($stepsdata[$stepdata->id]['timedue'], get_string('strftimedatefullshort')).' ';
-        $html .= '</span></h3>';
+        $html .= '</div></h3>';
         $html .= '<div class="">'.$stepdata->description;
         $html .= '</div>';
         $i++;
@@ -339,13 +339,13 @@ if (has_capability('mod/planner:manageplanner', $context)) {
         $html .= '<div id="accordion">';
         $i = 1;
         foreach ($templateuserstepdata as $stepdata) {
-            $html .= '<h3 class="">'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
-            <span style="float:right">'.get_string('enddate', 'planner').' : '
-            .userdate($stepdata->duedate, get_string('strftimedatefullshort')).' ';
+            $html .= '<h3 class="step-header">'. '<div class="stepname">' . get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
+        <div class="stepdate">'.get_string('enddate', 'planner').' : '
+        .userdate($stepdata->duedate, get_string('strftimedatefullshort')).' ';
             if ($stepdata->completionstatus == '1') {
                 $html .= $OUTPUT->pix_icon('i/checked', 'Completed');
             }
-            $html .= '</span></h3>';
+            $html .= '</div></h3>';
             $html .= '<div class="">'.$stepdata->description;
             if ($i == $j + 1) {
                 $html .= '<br/><form action="view.php" method="post" >

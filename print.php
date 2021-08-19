@@ -160,10 +160,11 @@ if (has_capability('mod/planner:manageplanner', $context)) {
 
     $i = 1;
     foreach ($templatestepdata as $stepdata) {
-        $adminprint .= '<h4 class="">'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
-        <span style="float:right">'.get_string('enddate', 'planner').' : '
+        $adminprint .= '<h4 class="step-header">'. '<div class="stepname">' . get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
+        <div class="stepdate">'.get_string('enddate', 'planner').' : '
         .userdate($stepsdata[$stepdata->id]['timedue'], get_string('strftimedatefullshort')).' ';
-        $adminprint .= '</span></h4>';
+        $adminprint .= '</div></h4>';
+
         $adminprint .= $stepdata->description;
         $i++;
     }
@@ -173,13 +174,13 @@ if (has_capability('mod/planner:manageplanner', $context)) {
         $i = 1;
         $userprint = '';
         foreach ($templateuserstepdata as $stepdata) {
-            $userprint .= '<h4>'.get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'
-            <span style="float:right">'.get_string('enddate', 'planner').' : '
+            $userprint .= '<h4 class="step-header">'. '<div class="stepname">' . get_string('step', 'planner').' '.$i.' - '.$stepdata->name.'</div>'.'
+            <div class="stepdate">'.get_string('enddate', 'planner').' : '
             .userdate($stepdata->duedate, get_string('strftimedatefullshort')).' ';
             if ($stepdata->completionstatus == '1') {
                 $userprint .= $OUTPUT->pix_icon('i/checked', get_string('completed', 'planner'));
             }
-            $userprint .= '</span></h4>';
+            $userprint .= '</div></h4>';
             $userprint .= $stepdata->description;
             $i++;
         }

@@ -50,6 +50,26 @@
     width: 200px;
 }
 
+#region-main .step-header {
+    display: inline-flex;
+    width: -webkit-fill-available;
+}
+
+#region-main .step-header .ui-accordion-header-icon {
+    align-self: center;
+    min-width: 15px;
+}
+#region-main .step-header .stepname {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#region-main .step-header .stepdate {
+    margin-left: auto;
+    white-space: nowrap;
+}
+
 #dashboard{
     min-height:auto;
 }
