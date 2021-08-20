@@ -50,6 +50,10 @@
     width: 200px;
 }
 
+#page-mod-planner-mod .felement .d-md-inline-block.mr-md-2.position-relative {
+    width: 200px;
+}
+
 #region-main .step-header {
     display: inline-flex;
     width: -webkit-fill-available;
