@@ -153,7 +153,7 @@ class template_form extends moodleform {
                     for ($i = 0; $i <= $totalsteps; $i++) {
                         if (isset($data['stepname'][$i]) AND (!empty($data['stepname'][$i]))) {
                             if (isset($data['stepallocation'][$i])) {
-                                $errors['stepallocation['.$i.']'] = 'Total time allocation should not exceed or less than 100';
+                                $errors['stepallocation['.$i.']'] = get_string('totaltimeallocated', 'planner');
                             }
                         }
                     }

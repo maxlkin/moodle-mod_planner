@@ -57,7 +57,7 @@ $string['upcomingemailtemplatedefault'] = 'Hi {$a->firstname},
 
 You have upcoming Step \'{$a->stepname}\' for {$a->activityname} on {$a->stepdate}.
 
-Review your step at {$a->link}
+Review your step at {$a->link}.
 
 If you need help, please contact the site administrator,
 {$a->admin}';
@@ -65,9 +65,9 @@ $string['missedemailtemplate'] = 'Missed due date email template';
 $string['missedemailtemplate_help'] = 'Email template for reminder email of missed due date';
 $string['missedemailtemplatedefault'] = 'Hi {$a->firstname},
 
-You missed Step \'{$a->stepname}\' for {$a->activityname} on {$a->duedate}.
+You missed the Step \'{$a->stepname}\' for {$a->activityname} on {$a->duedate}.
 
-Complete your step earliest at {$a->link}
+You can complete your step at {$a->link}.
 
 If you need help, please contact the site administrator,
 {$a->admin}';
@@ -75,21 +75,21 @@ $string['frequencyemail'] = 'Frequency of reminders';
 $string['frequencyemailhelp'] = 'Frequency of reminders (X days)';
 
 $string['linkedactivityemailtemplate'] = 'Deleted linked activity teacher email template';
-$string['linkedactivityemailtemplate_help'] = 'Email template of teacher for deleted linked activity from planner';
+$string['linkedactivityemailtemplate_help'] = 'Email template of teacher for a deleted linked activity from planner';
 $string['linkedactivityemailtemplatedefault'] = 'Hi {$a->firstname},
 
-Activity which is linked to {$a->plannername} is deleted.
+Activity which is linked to {$a->plannername} has been deleted.
 
-Request you to remove this planner from course {$a->coursename} - {$a->courselink}.
+We request that you remove this planner from this course {$a->coursename} - {$a->courselink}.
 
 If you need help, please contact the site administrator,
 {$a->admin}';
 
 $string['linkedactivitystudentemailtemplate'] = 'Deleted linked activity student email template';
-$string['linkedactivitystudentemailtemplate_help'] = 'Email template of student for deleted linked activity from planner';
+$string['linkedactivitystudentemailtemplate_help'] = 'Email template of student for a deleted linked activity from planner';
 $string['linkedactivitystudentemailtemplatedefault'] = 'Hi {$a->firstname},
 
-Request you to contact your lecturer as activity from \'{$a->plannername}\' has been deleted from the system.
+We request that you to contact your lecturer as activity from \'{$a->plannername}\' has been deleted from the system.
 
 If you need help, please contact the site administrator,
 {$a->admin}';
@@ -102,6 +102,7 @@ Date has been changed for \'{$a->activityname}\' which is linked to {$a->planner
 
 If you need help, please contact the site administrator,
 {$a->admin}';
+$string['totaltimeallocated'] = 'Total time allocated for all steps should equal 100';
 $string['enternumber'] = 'Enter number between 0-100';
 $string['steptimeallocationsettings'] = 'Step {$a} time allocation';
 $string['stepnamesettings'] = 'Step {$a} name';
@@ -191,17 +192,17 @@ $string['markstepascomplete'] = 'Mark this step as completed';
 $string['markstepaspending'] = 'Mark this step as pending';
 $string['submit'] = 'Submit';
 $string['differentdates'] = 'Want to try a different date?';
-$string['stepsyettobe'] = 'Steps yet to be configured';
+$string['stepsyettobe'] = 'Steps have yet to be configured';
 $string['calculatestudentsteps'] = 'Calculate Student Steps';
 $string['recalculatestudentsteps'] = 'Re-Calculate Student Steps';
 $string['actionnotassociated'] = 'Activity not associated';
 $string['invalidplanner'] = 'Invalid planner';
-$string['relatedactivitynotexistdelete'] = 'Associated activity not exist, kindly remove this planner.';
+$string['relatedactivitynotexistdelete'] = 'Associated activity does not exist, kindly remove this planner.';
 $string['disabletemplate'] = 'Disable this template';
 $string['enabletemplate'] = 'Enable this template';
 $string['description'] = 'Description';
 $string['helpinstruction'] = 'Step';
-$string['helpinstruction_help'] = 'IF you want to remove this step, save it with no content.';
+$string['helpinstruction_help'] = 'If you want to remove this step, save it with no name.';
 $string['informationcoursepage'] = 'Information on course page';
 $string['shownothing'] = 'Show nothing';
 $string['showitem3'] = 'Task number, title and due date';
