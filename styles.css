@@ -30,23 +30,23 @@
     width: 427px;
 }
 
-.fgroup_id_searchgroup .col-form-label .fgroup_id_searchgroup_label {
+.plannerformlayout .fgroup_id_searchgroup .col-form-label .fgroup_id_searchgroup_label {
     width: 45px;
 }
 
-.col-md-9.form-inline.align-items-start.felement {
+.plannerformlayout .fgroup_id_searchgroup .col-md-9.form-inline.align-items-start.felement {
     padding: 0px;
 }
 
-.felement .form-autocomplete-selection:focus {
+#page-mod-planner-mod .felement .form-autocomplete-selection:focus {
     box-shadow: none;
 }
 
-.felement .form-autocomplete-suggestions {
+#page-mod-planner-mod .felement .form-autocomplete-suggestions {
     min-width: 200px;
 }
 
-.felement .d-md-inline-block .form-control {
+#page-mod-planner-mod .felement .d-md-inline-block .form-control {
     width: 200px;
 }
 
