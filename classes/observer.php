@@ -516,7 +516,7 @@ class mod_planner_observer {
                                     $insertstep->timemodified = 0;
                                     $DB->insert_record('planner_userstep', $insertstep);
                                 }
-                                planner_update_events($planner, '', $userid, $stepsdata, false);
+                                planner_update_events($planner, $userid, $stepsdata, false);
                             }
                         }
                     }

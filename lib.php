@@ -45,7 +45,7 @@ function get_planner_name($planner) {
  * @return bool|int
  */
 function planner_add_instance($planner) {
-    global $DB, $CFG, $SESSION;
+    global $DB, $CFG;
 
     if ((!isset($planner->submitbutton2)) AND (!isset($planner->submitbutton))) {
         $url = $CFG->wwwroot.'/course/modedit.php?add=planner&type=';
@@ -460,7 +460,7 @@ WHERE ps.plannerid = '".$planner->id."' AND pu.userid = '".$userid."' ORDER BY p
             $i++;
         }
     }
-    planner_update_events($planner, '', $userid, $stepsdata, false);
+    planner_update_events($planner, $userid, $stepsdata, false);
 }
 
 /**
@@ -502,20 +502,19 @@ WHERE ps.plannerid = '".$planner->id."' AND pu.userid = '".$userid."' ORDER BY p
             $DB->update_record('planner_userstep', $updatestep);
         }
     }
-    planner_update_events($planner, '', $userid, $stepsdata, false);
+    planner_update_events($planner, $userid, $stepsdata, false);
 }
 
 /**
  * Updates events for Planner activity
  *
  * @param object $planner
- * @param null $override
  * @param object $students
  * @param object $stepsdata
  * @param boolean $alluser
  * @return void
  */
-function planner_update_events($planner, $override = null, $students, $stepsdata, $alluser = true) {
+function planner_update_events($planner, $students, $stepsdata, $alluser = true) {
     global $DB;
 
     if ($alluser) {

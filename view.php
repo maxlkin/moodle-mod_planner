@@ -123,7 +123,7 @@ if (($action == "studentsteps") OR ($action == "recalculatesteps")) {
                 $DB->insert_record('planner_userstep', $insertstudentstep);
             }
         }
-        planner_update_events($planner, '', $students, $stepsdata, true);
+        planner_update_events($planner, $students, $stepsdata, true);
         if ($action == "recalculatesteps") {
             redirect($redirecturl, get_string('recalculatedstudentsteps', 'planner'),
             null, \core\output\notification::NOTIFY_SUCCESS);
@@ -241,7 +241,7 @@ if ($templatedata = $templateform->get_data()) {
             $DB->update_record('planner_userstep', $updatestep);
             $i++;
         }
-        planner_update_events($planner, '', $USER->id, $stepsdata, false);
+        planner_update_events($planner, $USER->id, $stepsdata, false);
 
         $params = array(
             'objectid' => $planner->id,
