@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,18 +14,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Planner module version info
+ * Contains the events the save new template modal can fire.
  *
- * @copyright 2021 Brickfield Education Labs, www.brickfield.ie
- * @package mod_planner
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author      Jay Churchward <jay@brickfieldlabs.ie>
+ * @module      mod_planner/events
+ * @copyright   2021 Brickfield Education Labs <jay@brickfieldlabs.ie>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component = 'mod_planner'; // Full name of the plugin (used for diagnostics).
-$plugin->release = '1.401.01';
-$plugin->version = 2023041701.03;
-$plugin->requires  = 2022112800; // Moodle 4.1 and higher.
-$plugin->cron      = 0;
-$plugin->maturity = MATURITY_STABLE;
+export default {
+    savenewtemplate: 'mod_planner-modal_save_new_template:savenewtemplate',
+};

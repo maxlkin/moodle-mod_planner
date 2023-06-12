@@ -30,7 +30,7 @@ class mod_planner_mod_form extends moodleform_mod {
      * Function definition for moodle form
      */
     public function definition() {
-        global $PAGE, $DB, $USER, $course;
+        global $PAGE, $DB, $USER, $course, $CFG;
 
         $PAGE->force_settings_menu();
         $mform = $this->_form;
@@ -153,8 +153,15 @@ class mod_planner_mod_form extends moodleform_mod {
             if ($activitycmid) {
                 $mform->setDefault('activitycmid', $activitycmid);
             }
+        } else {
+            if ($activity = get_coursemodule_from_id('assign', $cminfoactivity->id)) {
+                $mform->addElement('static', 'activityname', get_string('activityname', 'planner'), $activity->name);
+            } else if ($activity = get_coursemodule_from_id('quiz', $cminfoactivity->id)) {
+                $mform->addElement('static', 'activityname', get_string('activityname', 'planner'), $activity->name);
+            }
         }
 
+        $alltemplates = '';
         if (!$this->_cm) {
             $admins = get_admins();
             $isadmin = false;
@@ -171,7 +178,7 @@ class mod_planner_mod_form extends moodleform_mod {
             }
             $templates = array();
             $templates[0] = '';
-            $alltemplates = $DB->get_records_sql("SELECT id,name,disclaimer FROM {plannertemplate}  $whereteacher");
+            $alltemplates = $DB->get_records_sql("SELECT id,name,disclaimer,personal FROM {plannertemplate}  $whereteacher");
             if ($alltemplates) {
                 foreach ($alltemplates as $id => $template) {
                     $templates[$id] = $template->name;
@@ -208,10 +215,12 @@ class mod_planner_mod_form extends moodleform_mod {
             $repeatno = count($templatestepdata);
             if ($repeatno > 0) {
                 $repeatarray = array();
-                $repeatarray[] = $mform->createElement('text', 'stepname', get_string('stepname', 'planner'), 'size="50" ');
+                $repeatarray[] = $mform->createElement('text', 'stepname', get_string('stepname', 'planner'),
+                    ['size' => "50", 'selector' => 'planner_stepname']);
                 $repeatarray[] = $mform->createElement('text', 'stepallocation', get_string('steptimeallocation', 'planner'),
-                'size="3" ');
-                $repeatarray[] = $mform->createElement('editor', 'stepdescription', get_string('stepdescription', 'planner'));
+                    ['size' => "3", 'selector' => 'planner_stepallocation']);
+                $repeatarray[] = $mform->createElement('editor', 'stepdescription', get_string('stepdescription', 'planner'),
+                    ['selector' => 'planner_stepdescription']);
                 $repeatno = count($templatestepdata);
                 $repeateloptions = array();
                 $repeateloptions['stepname']['type'] = PARAM_RAW;
@@ -230,11 +239,17 @@ class mod_planner_mod_form extends moodleform_mod {
                 $mform->addElement('editor', 'disclaimer', get_string('disclaimer', 'planner'));
                 $mform->settype('disclaimer', PARAM_RAW);
             }
+            $mform->addElement('button', 'savenewtemplate', get_string('savenewtemplate', 'planner'));
+            if ($alltemplates) {
+                $personal = $alltemplates[$templateid]->personal;
+            } else {
+                $personal = 0;
+            }
+            $PAGE->requires->js_call_amd('mod_planner/savenewtemplate', 'init', array($personal));
         }
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
     }
-
     /**
      * Moodle form validation
      *
@@ -244,7 +259,7 @@ class mod_planner_mod_form extends moodleform_mod {
      */
     public function validation ($data, $files) {
         $errors = parent::validation($data, $files);
-        if ((isset($data['submitbutton2'])) OR (isset($data['submitbutton']))) {
+        if ((isset($data['submitbutton2'])) || (isset($data['submitbutton']))) {
             if ($data['update'] == 0) {
                 $activitycmid = isset($data['activitycmid']) ? $data['activitycmid'] : 0;
                 $templateid = isset($data['templateid']) ? $data['templateid'] : 0;
@@ -261,7 +276,7 @@ class mod_planner_mod_form extends moodleform_mod {
                 $totalsteps = count($data['stepallocation']);
                 $totaltimeallocation = 0;
                 for ($i = 0; $i <= $totalsteps; $i++) {
-                    if (isset($data['stepname'][$i]) AND (!empty($data['stepname'][$i]))) {
+                    if (isset($data['stepname'][$i]) && (!empty($data['stepname'][$i]))) {
                         if (isset($data['stepallocation'][$i])) {
                             $totaltimeallocation = $totaltimeallocation + $data['stepallocation'][$i];
                         }
@@ -275,7 +290,7 @@ class mod_planner_mod_form extends moodleform_mod {
                 }
                 if ($totaltimeallocation != '100') {
                     for ($i = 0; $i <= $totalsteps; $i++) {
-                        if (isset($data['stepname'][$i]) AND (!empty($data['stepname'][$i]))) {
+                        if (isset($data['stepname'][$i]) && (!empty($data['stepname'][$i]))) {
                             if (isset($data['stepallocation'][$i])) {
                                 $errors['stepallocation['.$i.']'] = get_string('totaltimeallocated', 'planner');
                             }

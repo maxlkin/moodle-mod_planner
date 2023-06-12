@@ -22,8 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_planner\planner;
+
 require(__DIR__.'/../../config.php');
-require_once(__DIR__.'/template_form.php');
 require_once($CFG->libdir . '/adminlib.php');
 $id = optional_param('id', '0', PARAM_INT);   // Templated id.
 $totalsteps = optional_param('totalsteps', '0', PARAM_INT);   // Total steps.
@@ -67,69 +68,17 @@ if ($id) {
     $PAGE->set_heading("{$SITE->shortname}");
 }
 
-$templateform = new template_form('managetemplate.php', array('id' => $id, 'cid' => $cid,
+$templateform = new mod_planner\form\template_form('managetemplate.php', array('id' => $id, 'cid' => $cid,
 'templatedata' => $templatedata, 'templatestepdata' => $templatestepdata));
 
 if ($templateform->is_cancelled()) {
     redirect($redirecturl);
 } else if ($templatedata = $templateform->get_data()) {
     if ($templatedata->id) {
-        // Update case.
-        $updatetemplate = new stdClass();
-        $updatetemplate->id = $templatedata->id;
-        $updatetemplate->name = $templatedata->name;
-        $disclaimer = $templatedata->disclaimer;
-        $updatetemplate->disclaimer = $disclaimer['text'];
-        $updatetemplate->personal = $templatedata->personal;
-        $updatetemplate->timemodified = time();
-        if ($DB->update_record('plannertemplate', $updatetemplate)) {
-            $DB->delete_records('plannertemplate_step', array('plannerid' => $templatedata->id));
-            $stepnames = $templatedata->stepname;
-            $stepstepallocations = $templatedata->stepallocation;
-            $stepstepdescriptions = $templatedata->stepdescription;
-            if ($templatedata->option_repeats > 0) {
-                for ($i = 0; $i < $templatedata->option_repeats; $i++) {
-                    if ($stepnames[$i]) {
-                        $insertrecord = new stdClass();
-                        $insertrecord->plannerid = $templatedata->id;
-                        $insertrecord->name = $stepnames[$i];
-                        $insertrecord->timeallocation = $stepstepallocations[$i];
-                        $description = $stepstepdescriptions[$i];
-                        $insertrecord->description = $description['text'];
-                        $DB->insert_record('plannertemplate_step', $insertrecord);
-                    }
-                }
-            }
-        }
+        planner::update_planner_template_step($templatedata);
         redirect($redirecturl, get_string('successfullyupdated', 'planner'), null, \core\output\notification::NOTIFY_SUCCESS);
     } else {
-        // Insert case.
-        $inserttemplate = new stdClass();
-        $inserttemplate->userid = $USER->id;
-        $inserttemplate->name = $templatedata->name;
-        $disclaimer = $templatedata->disclaimer;
-        $inserttemplate->disclaimer = $disclaimer['text'];
-        $inserttemplate->status = 1;
-        $inserttemplate->personal = $templatedata->personal;
-        $inserttemplate->timecreated = time();
-        if ($insertedtemplateid = $DB->insert_record('plannertemplate', $inserttemplate)) {
-            $stepnames = $templatedata->stepname;
-            $stepstepallocations = $templatedata->stepallocation;
-            $stepstepdescriptions = $templatedata->stepdescription;
-            if ($templatedata->option_repeats > 0) {
-                for ($i = 0; $i < $templatedata->option_repeats; $i++) {
-                    if ($stepnames[$i]) {
-                        $insertrecord = new stdClass();
-                        $insertrecord->plannerid = $insertedtemplateid;
-                        $insertrecord->name = $stepnames[$i];
-                        $insertrecord->timeallocation = $stepstepallocations[$i];
-                        $description = $stepstepdescriptions[$i];
-                        $insertrecord->description = $description['text'];
-                        $DB->insert_record('plannertemplate_step', $insertrecord);
-                    }
-                }
-            }
-        }
+        planner::insert_planner_template_step($templatedata);
         redirect($redirecturl, get_string('successfullyadded', 'planner'), null, \core\output\notification::NOTIFY_SUCCESS);
     }
 }

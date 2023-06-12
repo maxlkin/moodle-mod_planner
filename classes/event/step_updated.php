@@ -16,8 +16,6 @@
 
 namespace mod_planner\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The mod_quiz attempt reviewed event.
  *

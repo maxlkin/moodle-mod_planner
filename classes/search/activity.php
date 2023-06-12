@@ -16,8 +16,6 @@
 
 namespace mod_planner\search;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Search area for mod_planner activities.
  *

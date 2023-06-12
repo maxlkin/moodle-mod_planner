@@ -60,7 +60,7 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
             if ($allplanners) {
                 $studentroleid = $DB->get_record('role', array('shortname' => 'student'));
                 $teacherroleid = $DB->get_record('role', array('shortname' => 'editingteacher'));
-                $supportuser = core_user::get_support_user();
+                $supportuser = \core_user::get_support_user();
                 $deletedactivityemailsubject = get_string('deletedactivityemailsubject', 'mod_planner');
                 $deletedactivitystudentsubject = get_string('deletedactivitystudentsubject', 'mod_planner');
                 $deletedactivityemail = get_config('planner', 'deletedactivityemail');
@@ -68,11 +68,11 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
 
                 foreach ($allplanners as $planner) {
                     $cminfo = $DB->get_record('course_modules', array('id' => $planner->activitycmid));
-                    if ((!$cminfo) OR ($cminfo->deletioninprogress == '1')) {
+                    if ((!$cminfo) || ($cminfo->deletioninprogress == '1')) {
 
                         $courseid = $planner->course;
                         $course = $DB->get_record('course', array('id' => $courseid));
-                        $coursecontext = context_course::instance($courseid);
+                        $coursecontext = \context_course::instance($courseid);
                         $teachers = get_role_users($teacherroleid->id, $coursecontext);
 
                         if ($teachers) {

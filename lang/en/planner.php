@@ -211,6 +211,13 @@ $string['deletedactivityemailsubject'] = 'Linked activity has been deleted email
 $string['deletedactivitystudentsubject'] = 'Linked activity has been deleted email notification';
 $string['changedateemailsubject'] = 'Activity date change email notification for planner';
 $string['addstepstoform'] = 'Add {no} step to the form';
+$string['savenewtemplate'] = 'Save as new template';
+$string['enternewname'] = 'Enter a new name for the template';
+$string['alltemplates'] = 'All templates';
+$string['mytemplates'] = 'My templates';
+$string['templatenameunique'] = 'The template name must be unique';
+$string['activityname'] = 'Activity name';
+$string['activityname_param'] = 'Activity name: {$a}';
 
 $string['activitiesenabled'] = 'selecting a activity';
 $string['activitiesenabled_help'] = '* Select an assignment or quiz activity for the planner.';

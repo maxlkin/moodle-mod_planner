@@ -13,9 +13,9 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    // It must be included from a Moodle page.
-}
+namespace mod_planner\form;
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 /**
@@ -25,14 +25,12 @@ require_once($CFG->dirroot.'/lib/formslib.php');
  * @package mod_planner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class template_form extends moodleform {
+class template_form extends \moodleform {
 
     /**
      * Define the form.
      */
     public function definition() {
-        global $CFG;
-
         $mform = $this->_form;
         $strrequired = get_string('required');
         $id = $this->_customdata['id'];
@@ -128,7 +126,7 @@ class template_form extends moodleform {
      * @return array|bool
      */
     public function validation($data, $files) {
-        global $CFG, $DB;
+        global $DB;
         $errors = parent::validation($data, $files);
         if (isset($data['submitbutton'])) {
             if (isset($data['stepname'])) {
@@ -137,7 +135,7 @@ class template_form extends moodleform {
                 $totalsteps = count($data['stepallocation']);
                 $totaltimeallocation = 0;
                 for ($i = 0; $i <= $totalsteps; $i++) {
-                    if (isset($data['stepname'][$i]) AND (!empty($data['stepname'][$i]))) {
+                    if (isset($data['stepname'][$i]) && (!empty($data['stepname'][$i]))) {
                         if (isset($data['stepallocation'][$i])) {
                             $totaltimeallocation = $totaltimeallocation + $data['stepallocation'][$i];
                         }
@@ -146,12 +144,17 @@ class template_form extends moodleform {
                 if (!$stepname) {
                     $errors['stepname[0]'] = get_string('required');
                 }
+                $name = $data['name'];
+                $nameunique = $DB->get_records('plannertemplate', array('name' => $name));
+                if ($nameunique) {
+                    $errors['name'] = get_string('templatenameunique', 'planner');
+                }
                 if (!$stepallocation) {
                     $errors['stepallocation[0]'] = get_string('required');
                 }
                 if ($totaltimeallocation != '100') {
                     for ($i = 0; $i <= $totalsteps; $i++) {
-                        if (isset($data['stepname'][$i]) AND (!empty($data['stepname'][$i]))) {
+                        if (isset($data['stepname'][$i]) && (!empty($data['stepname'][$i]))) {
                             if (isset($data['stepallocation'][$i])) {
                                 $errors['stepallocation['.$i.']'] = get_string('totaltimeallocated', 'planner');
                             }

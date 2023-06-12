@@ -77,7 +77,7 @@ class cron_task_datechange extends \core\task\scheduled_task {
                             $endtime = $modulename->timeclose;
                         }
 
-                        if (($starttime != $planner->timeopen) OR ($endtime != $planner->timeclose)) {
+                        if (($starttime != $planner->timeopen) || ($endtime != $planner->timeclose)) {
                             $courseid = $planner->course;
                             $course = $DB->get_record('course', array('id' => $courseid));
                             $coursecontext = context_course::instance($courseid);
