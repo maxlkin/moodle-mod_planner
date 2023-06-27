@@ -38,7 +38,11 @@ class observer {
      */
     public static function assign_user_override_created(\mod_assign\event\user_override_created $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('assign', $event->contextinstanceid);
@@ -76,7 +80,11 @@ class observer {
      */
     public static function assign_user_override_updated(\mod_assign\event\user_override_updated $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('assign', $event->contextinstanceid);
@@ -114,7 +122,11 @@ class observer {
      */
     public static function assign_user_override_deleted(\mod_assign\event\user_override_deleted $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('assign', $event->contextinstanceid);
@@ -139,7 +151,11 @@ class observer {
      */
     public static function assign_group_override_created(\mod_assign\event\group_override_created $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('assign', $event->contextinstanceid);
             if ($cm) {
@@ -182,7 +198,11 @@ class observer {
      */
     public static function assign_group_override_updated(\mod_assign\event\group_override_updated $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('assign', $event->contextinstanceid);
             if ($cm) {
@@ -225,7 +245,11 @@ class observer {
      */
     public static function assign_group_override_deleted(\mod_assign\event\group_override_deleted $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('assign', $event->contextinstanceid);
             if ($cm) {
@@ -255,7 +279,11 @@ class observer {
      */
     public static function quiz_user_override_created(\mod_quiz\event\user_override_created $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('quiz', $event->contextinstanceid);
@@ -293,7 +321,11 @@ class observer {
      */
     public static function quiz_user_override_updated(\mod_quiz\event\user_override_updated $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('quiz', $event->contextinstanceid);
@@ -331,7 +363,11 @@ class observer {
      */
     public static function quiz_user_override_deleted(\mod_quiz\event\user_override_deleted $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('quiz', $event->contextinstanceid);
@@ -357,7 +393,11 @@ class observer {
      */
     public static function quiz_group_override_created(\mod_quiz\event\group_override_created $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('quiz', $event->contextinstanceid);
             if ($cm) {
@@ -400,7 +440,11 @@ class observer {
      */
     public static function quiz_group_override_updated(\mod_quiz\event\group_override_updated $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('quiz', $event->contextinstanceid);
             if ($cm) {
@@ -443,7 +487,11 @@ class observer {
      */
     public static function quiz_group_override_deleted(\mod_quiz\event\group_override_deleted $event) {
         global $DB;
-        $context = \context_course::instance($event->courseid);
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         if ( $planner = $DB->get_record("planner", ["activitycmid" => $event->contextinstanceid])) {
             $cm = get_coursemodule_from_id('quiz', $event->contextinstanceid);
             if ($cm) {
@@ -474,6 +522,11 @@ class observer {
      */
     public static function role_assigned(\core\event\role_assigned $event) {
         global $DB, $CFG;
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         $studentroleids = get_archetype_roles('student');
         if (array_key_exists($event->objectid, $studentroleids)) {
@@ -541,6 +594,11 @@ class observer {
      */
     public static function role_unassigned(\core\event\role_unassigned $event) {
         global $DB;
+
+        $context = \context_course::instance($event->courseid, IGNORE_MISSING);
+        if ($context === false) {
+            return;
+        }
         $userid = $event->relateduserid;
         $studentroleids = get_archetype_roles('student');
         if (array_key_exists($event->objectid, $studentroleids)) {

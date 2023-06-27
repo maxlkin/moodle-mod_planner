@@ -283,6 +283,41 @@ class planner_test extends \advanced_testcase {
     }
 
     /**
+     * Test the form validation preventing duplicate template names.
+     */
+    public function test_get_template_unique_name() {
+        global $DB;
+        $this->resetAfterTest();
+
+        $templateid1 = $this->getDataGenerator()->get_plugin_generator('mod_planner')->create_template();
+        $course = $this->getDataGenerator()->create_course(['enablecompletion' => 1]);
+
+        // First, test editing the generated template.
+        $data = [];
+        // Params needed for form construction.
+        $data['id'] = $templateid1;
+        $data['cid'] = $course->id;
+        $data['name'] = 'Test planner template';
+        $data['templatedata'] = '';
+        $data['templatestepdata'] = '';
+        // Params needed to enter logic for validation.
+        $data['submitbutton'] = '';
+        $data['stepname'] = '';
+        form\template_form::mock_submit($data, []);
+        $form = new form\template_form('POST', $data);
+        $this->assertTrue($form->is_validated());
+        $formdata = $form->get_data();
+        $this->assertEquals($formdata->name, 'Test planner template');
+
+        // Next, test adding a new template but with same name.
+        $data['id'] = null;
+        $data['name'] = 'Test planner template';
+        form\template_form::mock_submit($data, []);
+        $form = new form\template_form('POST', $data);
+        $this->assertFalse($form->is_validated());
+    }
+
+    /**
      * Creates and returns all the needed test data.
      *
      * @return \stdClass

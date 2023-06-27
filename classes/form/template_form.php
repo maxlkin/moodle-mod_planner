@@ -158,7 +158,9 @@ class template_form extends \moodleform {
                     $errors['stepname[0]'] = get_string('required');
                 }
                 $name = $data['name'];
-                $nameunique = $DB->get_records('plannertemplate', ['name' => $name]);
+                // Checking that template name is unique, yet allowing an edit.
+                $nameselect = 'name = ? and id != ?';
+                $nameunique = $DB->get_records_select('plannertemplate', $nameselect, [$data['name'], $data['id']]);
                 if ($nameunique) {
                     $errors['name'] = get_string('templatenameunique', 'planner');
                 }
