@@ -24,44 +24,44 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
+$capabilities = [
 
-    'mod/planner:addinstance' => array(
+    'mod/planner:addinstance' => [
         'riskbitmask' => RISK_XSS,
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
-        ),
+        ],
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
-    ),
-    'mod/planner:managetemplates' => array(
+    ],
+    'mod/planner:managetemplates' => [
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
-        )
-    ),
-    'mod/planner:manageplanner' => array(
+        ]
+    ],
+    'mod/planner:manageplanner' => [
         'riskbitmask' => RISK_XSS,
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
-        ),
+        ],
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
-    ),
-    'mod/planner:view' => array(
+    ],
+    'mod/planner:view' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
+        'archetypes' => [
             'user' => CAP_ALLOW
-        )
-    ),
-);
+        ]
+    ],
+];

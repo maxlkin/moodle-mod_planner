@@ -29,6 +29,6 @@ $id = required_param('id', PARAM_INT);   // Course id.
 
 require_login();
 
-$PAGE->set_url('/mod/planner/index.php', array('id' => $id));
+$PAGE->set_url('/mod/planner/index.php', ['id' => $id]);
 
 redirect("$CFG->wwwroot/course/view.php?id=$id");

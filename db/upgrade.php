@@ -49,25 +49,38 @@
  * @return void
  */
 function xmldb_planner_upgrade($oldversion) {
-    global $CFG;
+    global $DB;
 
-    // Automatically generated Moodle v3.5.0 release upgrade line.
-    // Put any upgrade step following this.
+    // Check for duplicate template names and append a number to the end of the name if there are duplicates.
+    if ($oldversion < 2023041701.06) {
+        $records = $DB->get_records('plannertemplate');
+        $namecount = array_count_values(array_column($records, 'name'));
 
-    // Automatically generated Moodle v3.6.0 release upgrade line.
-    // Put any upgrade step following this.
+        foreach ($records as $record) {
+            $names = array_column($records, 'name');
+            $name = $record->name;
+            $count = $namecount[$name];
 
-    // Automatically generated Moodle v3.7.0 release upgrade line.
-    // Put any upgrade step following this.
+            // If count is greater than 1, than the name is not unique.
+            if ($count > 1) {
+                $updatedname = $name . ' (' . $count . ')';
 
-    // Automatically generated Moodle v3.8.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Automatically generated Moodle v3.9.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Automatically generated Moodle v3.10.0 release upgrade line.
-    // Put any upgrade step following this.
+                // Check if the updated name is unique.
+                $unique = false;
+                while (!$unique) {
+                    if (!in_array($updatedname, $names)) {
+                        $unique = true;
+                    } else {
+                        $updatedname = $name . ' (' . ++$count . ')';
+                    }
+                }
+                $record->name = $updatedname;
+                $namecount[$name]--;
+                $DB->set_field('plannertemplate', 'name', $updatedname, ['id' => $record->id]);
+            }
+        }
+        upgrade_plugin_savepoint(true, 2023041701.06, 'mod', 'planner');
+    }
 
     return true;
 }

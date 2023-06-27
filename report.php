@@ -33,7 +33,7 @@ $group  = optional_param('group', 0, PARAM_ALPHANUMEXT); // Group selected.
 if (! $cm = get_coursemodule_from_id('planner', $id)) {
     throw new moodle_exception('invalidcoursemodule');
 }
-if (! $course = $DB->get_record("course", array("id" => $cm->course))) {
+if (! $course = $DB->get_record("course", ["id" => $cm->course])) {
     throw new moodle_exception('coursemisconf');
 }
 if (! $planner = planner::create_planner_by_id($cm->instance)) {
@@ -57,9 +57,9 @@ $PAGE->set_pagelayout('report');
 
 $pageurl = new moodle_url("/mod/planner/report.php");
 
-$PAGE->set_url('/mod/planner/report.php', array('id' => $id));
+$PAGE->set_url('/mod/planner/report.php', ['id' => $id]);
 
-$plannersteps = $DB->count_records('planner_step', array('plannerid' => $planner->id));
+$plannersteps = $DB->count_records('planner_step', ['plannerid' => $planner->id]);
 $coursecontext = \context_course::instance($course->id);
 
 $groupuserid = $USER->id;

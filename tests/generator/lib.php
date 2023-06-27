@@ -67,14 +67,14 @@ class mod_planner_generator extends testing_module_generator {
             $record->disclaimer = false;
         }
         if (!isset($record->stepname)) {
-            $record->stepname = array('Step 1', 'Step 2', 'Step 3');
+            $record->stepname = ['Step 1', 'Step 2', 'Step 3'];
         }
         if (!isset($record->stepallocation)) {
-            $record->stepallocation = array(1, 2, 3);
+            $record->stepallocation = [1, 2, 3];
         }
         if (!isset($record->stepdescription)) {
-            $record->stepdescription = array(array('text' => 'Step 1 description'), array('text' => 'Step 1 description'),
-                array('text' => 'Step 1 description'));
+            $record->stepdescription = [['text' => 'Step 1 description'], ['text' => 'Step 2 description'],
+                ['text' => 'Step 3 description']];
         }
         if (!isset($record->option_repeats)) {
             $record->option_repeats = 3;

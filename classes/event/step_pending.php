@@ -39,7 +39,7 @@ class step_pending extends \core\event\base {
      *
      * @return string
      */
-    public static function get_name() {
+    public static function get_name(): string {
         return get_string('steppending', 'mod_planner');
     }
 
@@ -48,10 +48,15 @@ class step_pending extends \core\event\base {
      *
      * @return string
      */
-    public function get_description() {
-        return "The user with id '$this->userid' has had their step id '".$this->other['stepid']."' and
-		step name '".$this->other['stepname']."' with planner id '$this->objectid' marked as pending by the user " .
-            "with id '$this->relateduserid' for the planner with course module id '$this->contextinstanceid'.";
+    public function get_description(): string {
+        $params = new \stdClass();
+        $params->userid = $this->userid;
+        $params->relateduserid = $this->relateduserid;
+        $params->stepid = $this->other['stepid'];
+        $params->stepname = $this->other['stepname'];
+        $params->plannerid = $this->other['plannerid'];
+        $params->cmid = $this->contextinstanceid;
+        return get_string('event:steppending', 'mod_planner', $params);
     }
 
     /**
@@ -59,8 +64,8 @@ class step_pending extends \core\event\base {
      *
      * @return \moodle_url
      */
-    public function get_url() {
-        return new \moodle_url('/mod/planner/view.php', array('id' => $this->contextinstanceid));
+    public function get_url(): \moodle_url {
+        return new \moodle_url('/mod/planner/view.php', ['id' => $this->contextinstanceid]);
     }
 
     /**
@@ -68,9 +73,15 @@ class step_pending extends \core\event\base {
      *
      * @return array
      */
-    protected function get_legacy_logdata() {
-        return array($this->courseid, 'planner', 'view', 'view.php?id=' . $this->objectid,
-            $this->other['plannerid'], $this->contextinstanceid);
+    protected function get_legacy_logdata(): array {
+        return [
+            $this->courseid,
+            'planner',
+            'view',
+            'view.php?id=' . $this->objectid,
+            $this->other['plannerid'],
+            $this->contextinstanceid
+        ];
     }
 
     /**
@@ -79,15 +90,15 @@ class step_pending extends \core\event\base {
      * @throws \coding_exception
      * @return void
      */
-    protected function validate_data() {
+    protected function validate_data(): void {
         parent::validate_data();
 
         if (!isset($this->relateduserid)) {
-            throw new \coding_exception('The \'relateduserid\' must be set.');
+            throw new \coding_exception(get_string('event:userexception', 'mod_planner'));
         }
 
         if (!isset($this->other['plannerid'])) {
-            throw new \coding_exception('The \'plannerid\' value must be set in other.');
+            throw new \coding_exception(get_string('event:plannerexception', 'mod_planner'));
         }
     }
 }

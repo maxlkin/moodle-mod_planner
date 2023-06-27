@@ -31,14 +31,16 @@ class restore_planner_activity_structure_step extends restore_activity_structure
      */
     protected function define_structure() {
 
-        $paths = array();
+        $paths = [];
         $userinfo = $this->get_setting_value('userinfo');
 
         $paths[] = new restore_path_element('planner', '/activity/planner');
         $paths[] = new restore_path_element('planner_step', '/activity/planner/plannersteps/plannerstep');
         if ($userinfo) {
-            $paths[] = new restore_path_element('planner_userstep',
-            '/activity/planner/plannersteps/plannerstep/plannerusersteps/planneruserstep');
+            $paths[] = new restore_path_element(
+                'planner_userstep',
+                '/activity/planner/plannersteps/plannerstep/plannerusersteps/planneruserstep'
+            );
         }
 
         // Return the paths wrapped into standard activity structure.
@@ -59,7 +61,6 @@ class restore_planner_activity_structure_step extends restore_activity_structure
         /*if (!restore_structure_step::get_mapping('course_module', $data->activitycmid)) {
             throw new restore_step_exception('planner_linked_activity_not_included');
         }*/
-        $oldid = $data->id;
         $data->course = $this->get_courseid();
         $newcmactivity = restore_structure_step::get_mapping('course_module', $data->activitycmid);
         $data->activitycmid = $newcmactivity->newitemid;
@@ -102,7 +103,7 @@ class restore_planner_activity_structure_step extends restore_activity_structure
         $data->stepid = $this->get_new_parentid('planner_step');
         $data->userid = $this->get_mappingid('user', $data->userid);
 
-        $newitemid = $DB->insert_record('planner_userstep', $data);
+        $DB->insert_record('planner_userstep', $data);
         // No need to save this mapping as far as nothing depend on it.
         // (child paths, file areas nor links decoder).
     }

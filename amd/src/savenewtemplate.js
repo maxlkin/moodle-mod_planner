@@ -88,6 +88,7 @@ const show = async ({ focusOnClose = null } = {}) => {
                 stepallocation: stepAllocation,
                 stepdescription: stepDescription,
                 optionrepeats: names.length,
+                courseid: courseId,
             },
             done: (data) => {
                 if (data !== '') {
@@ -111,9 +112,11 @@ const show = async ({ focusOnClose = null } = {}) => {
 /**
  * Set up the save new template actions.
  * @param {string} personal Whether the template is personal or global.
+ * @param {integer} course The course id.
  */
-export const init = (personal) => {
+export const init = (personal, course) => {
     isPersonal = personal;
+    courseId = course;
     if (!init.initialised) {
         // Event listeners should only be registered once.
         init.initialised = true;
@@ -125,6 +128,11 @@ export const init = (personal) => {
  * Whether the template is global or personal.
  */
 let isPersonal = '';
+
+/**
+ * The course id.
+ */
+let courseId = 0;
 
 /**
  * Whether the init function was called before.

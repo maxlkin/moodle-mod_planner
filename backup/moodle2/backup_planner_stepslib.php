@@ -48,19 +48,37 @@ class backup_planner_activity_structure_step extends backup_activity_structure_s
         $userinfo = $this->get_setting_value('userinfo');
 
         // Define each element separated.
-        $planner = new backup_nested_element('planner', array('id'), array(
-            'name', 'intro', 'introformat', 'disclaimer',
-            'activitycmid', 'stepview', 'timeopen', 'timeclose', 'timemodified'));
+        $planner = new backup_nested_element(
+            'planner',
+            ['id'],
+            [
+                'name',
+                'intro',
+                'introformat',
+                'disclaimer',
+                'activitycmid',
+                'stepview',
+                'timeopen',
+                'timeclose',
+                'timemodified'
+            ]
+        );
 
         $plannersteps = new backup_nested_element('plannersteps');
 
-        $plannerstep = new backup_nested_element('plannerstep', array('id'), array(
-            'name', 'timeallocation', 'description'));
+        $plannerstep = new backup_nested_element(
+            'plannerstep',
+            ['id'],
+            ['name', 'timeallocation', 'description']
+        );
 
         $plannerusersteps = new backup_nested_element('plannerusersteps');
 
-        $planneruserstep = new backup_nested_element('planneruserstep', array('id'), array(
-            'userid', 'timestart', 'duedate', 'completionstatus', 'timemodified'));
+        $planneruserstep = new backup_nested_element('
+            planneruserstep',
+            ['id'],
+            ['userid', 'timestart', 'duedate', 'completionstatus', 'timemodified']
+        );
 
         // Build the tree.
         $planner->add_child($plannersteps);
@@ -70,13 +88,13 @@ class backup_planner_activity_structure_step extends backup_activity_structure_s
         $plannerusersteps->add_child($planneruserstep);
 
         // Define sources.
-        $planner->set_source_table('planner', array('id' => backup::VAR_ACTIVITYID));
+        $planner->set_source_table('planner', ['id' => backup::VAR_ACTIVITYID]);
 
-        $plannerstep->set_source_table('planner_step', array('plannerid' => backup::VAR_PARENTID), 'id ASC');
+        $plannerstep->set_source_table('planner_step', ['plannerid' => backup::VAR_PARENTID], 'id ASC');
 
         // All the rest of elements only happen if we are including user info.
         if ($userinfo) {
-            $planneruserstep->set_source_table('planner_userstep', array('stepid' => backup::VAR_PARENTID));
+            $planneruserstep->set_source_table('planner_userstep', ['stepid' => backup::VAR_PARENTID]);
         }
 
         // Define id annotations.

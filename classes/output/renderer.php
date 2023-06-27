@@ -38,7 +38,14 @@ class renderer extends \plugin_renderer_base {
      * @param int $id
      * @return string
      */
-    public function display_planner($planner, $cm, $data, $context, $templateform, $id) {
+    public function display_planner(
+        object $planner,
+        object $cm,
+        object $data,
+        object $context,
+        object $templateform,
+        int $id
+    ): string {
         global $DB;
         $out = '';
         $out .= $this->output->header();
@@ -57,13 +64,13 @@ class renderer extends \plugin_renderer_base {
             $out .= $this->output->box(format_module_intro('planner', $planner, $cm->id), 'generalbox', 'intro');
         }
 
-        $params = array('id' => $cm->id);
+        $params = ['id' => $cm->id];
         $printurl = new \moodle_url('/mod/planner/print.php', $params);
         $printtitle = get_string('printerfriendly', 'glossary');
-        $printattributes = array(
-                    'class' => 'printicon',
-                    'title' => $printtitle
-        );
+        $printattributes = [
+            'class' => 'printicon',
+            'title' => $printtitle
+        ];
         $out .= '<div style="text-align: right">';
         $out .= \html_writer::link($printurl, $printtitle, $printattributes);
         $out .= '</div>';
@@ -83,13 +90,13 @@ class renderer extends \plugin_renderer_base {
         $out .= '<h3>'.get_string('plannerdefaultstartingon', 'planner').' : '
         .userdate($time->defaultstarttime, get_string('strftimedatefullshort')).'</h3>';
         $out .= '<h3>'.get_string('plannerdefaultendingon', 'planner').' : '.
-                userdate($time->endtime, get_string('strftimedatefullshort')).'</h3>';
+                userdate($time->defaultendtime, get_string('strftimedatefullshort')).'</h3>';
         if (isset($time->userstartdate->timestart)) {
             $out .= '<h3>'.get_string('startingon', 'planner').' : '
             .userdate($time->starttime, get_string('strftimedatefullshort')).'</h3>';
             if (isset($time->userenddate->duedate)) {
                 $out .= '<h3>'.get_string('endingon', 'planner').' : '
-                .userdate($time->userenddate->duedate, get_string('strftimedatefullshort')).'</h3>';
+                .userdate($time->endtime, get_string('strftimedatefullshort')).'</h3>';
             }
         }
 
@@ -101,7 +108,7 @@ class renderer extends \plugin_renderer_base {
             $html = '<div id="accordion">';
             $totaltime = $time->endtime - $time->starttime;
             $exsitingsteptime = $time->starttime;
-            $stepsdata = array();
+            $stepsdata = [];
             foreach ($data->templatestepdata as $stepkey => $stepval) {
                 $existingsteptemp = ($totaltime * $stepval->timeallocation) / 100;
                 $exsitingsteptime = $existingsteptemp + $exsitingsteptime;
@@ -159,7 +166,7 @@ class renderer extends \plugin_renderer_base {
                 $out .= $html;
                 $out .= '<br/>';
                 $out .= '</div></div><div class="col-md-5"><h2>'.get_string('differentdates', 'planner').'</h2>';
-                $out .= $templateform->display();
+                $out .= $templateform->render();
                 $out .= '</div>';
                 $out .= '</div>';
             } else {
@@ -174,17 +181,24 @@ class renderer extends \plugin_renderer_base {
             if (($time->starttime != $planner->timeopen) || ($time->endtime != $planner->timeclose)) {
                 $out .= '<br/>';
                 $out .= '<div style="text-align:center">';
-                $out .= $this->output->single_button(new \moodle_url('view.php',
-                    array('id' => $id, 'action' => 'recalculatesteps')), get_string('recalculatestudentsteps', 'planner'));
+                $out .= $this->output->single_button(
+                    new \moodle_url('view.php', ['id' => $id, 'action' => 'recalculatesteps']),
+                    get_string('recalculatestudentsteps', 'planner')
+                );
                 $out .= '</div>';
             } else {
-                $checkalreadycompleted = $DB->count_records_sql("SELECT count(pu.id) FROM {planner_userstep} pu
-                JOIN {planner_step} ps ON (ps.id = pu.stepid) WHERE ps.plannerid = '".$planner->id."'");
+                $sql = 'SELECT count(pu.id)
+                          FROM {planner_userstep} pu
+                          JOIN {planner_step} ps ON (ps.id = pu.stepid)
+                         WHERE ps.plannerid = :plannerid';
+                $checkalreadycompleted = $DB->count_records_sql($sql, ['plannerid' => $planner->id]);
                 if ($checkalreadycompleted == 0) {
                     $out .= '<br/>';
                     $out .= '<div style="text-align:center">';
-                    $out .= $this->output->single_button(new \moodle_url('view.php',
-                        array('id' => $id, 'action' => 'studentsteps')), get_string('calculatestudentsteps', 'planner'));
+                    $out .= $this->output->single_button(
+                        new \moodle_url('view.php', ['id' => $id, 'action' => 'studentsteps']),
+                        get_string('calculatestudentsteps', 'planner')
+                    );
                     $out .= '</div>';
                 }
             }
@@ -199,15 +213,11 @@ class renderer extends \plugin_renderer_base {
      * @param int $cid
      * @return string
      */
-    public function setup_template($cid) {
+    public function setup_template(int $cid): string {
         $out = '';
         $out .= $this->output->header();
         $out .= $this->output->heading(get_string('manage_templates', 'planner'));
         $out .= $this->output->box_start('generalbox');
-
-        $out .= "<div style=display:inline-flex; class=plannerformlayout>";
-        $out .= $this->output->single_button(new \moodle_url('/mod/planner/managetemplate.php',
-        array('cid' => $cid)), get_string('addtemplate', 'planner'));
 
         return $out;
     }
@@ -221,25 +231,50 @@ class renderer extends \plugin_renderer_base {
      * @param string $searchclauses
      * @param int $perpage
      * @param bool $mytemplates
-     * @return string
+     * @return void
      */
-    public function display_template_table($cid, $mform, $pageurl, $searchclauses, $perpage, $mytemplates = false) {
+    public function display_template_table(
+        int $cid,
+        object $mform,
+        string $pageurl,
+        string $searchclauses,
+        int $perpage,
+        bool $mytemplates = false
+    ): void {
         global $USER;
 
         if ($mytemplates) {
             $mform->display();
-            $out = "</div>";
+            $out = "<div style=display:inline-flex; class=plannerformlayout>";
+            $out .= $this->output->single_button(
+                new \moodle_url('/mod/planner/managetemplate.php', ['cid' => $cid]), get_string('addtemplate', 'planner')
+            );
+            $out .= "</div>";
             $out .= '<h3>'.get_string('mytemplates', 'planner').'</h3>';
             echo $out;
             $table = new \flexible_table('my-planner-templates');
-            $table->set_attribute('class', 'mytemplates');
+            $table->set_control_variables([
+                TABLE_VAR_SORT => 'sort',
+                TABLE_VAR_HIDE => 'hide',
+                TABLE_VAR_SHOW => 'show',
+                TABLE_VAR_IFIRST => 'ifirst',
+                TABLE_VAR_ILAST => 'ilast',
+                TABLE_VAR_PAGE => 'page'
+            ]);
         } else {
             echo '<h3>'.get_string('alltemplates', 'planner').'</h3>';
             $table = new \flexible_table('all-planner-templates');
-            $table->set_attribute('class', 'alltemplates');
+            $table->set_control_variables([
+                TABLE_VAR_SORT => 'ssort',
+                TABLE_VAR_HIDE => 'shide',
+                TABLE_VAR_SHOW => 'sshow',
+                TABLE_VAR_IFIRST => 'sifirst',
+                TABLE_VAR_ILAST => 'silast',
+                TABLE_VAR_PAGE => 'spage'
+            ]);
         }
-        $tablecolumns = array();
-        $tableheaders = array();
+        $tablecolumns = [];
+        $tableheaders = [];
         $tablecolumns[] = 'name';
         $tablecolumns[] = 'fullname';
         $tablecolumns[] = 'personal';
@@ -266,6 +301,7 @@ class renderer extends \plugin_renderer_base {
         $table->define_baseurl($pageurl);
 
         $table->no_sorting('action');
+        $table->sortable(true, 'name', SORT_ASC);
 
         $table->set_attribute('cellspacing', '0');
         $table->set_attribute('id', 'dashboard');
@@ -275,18 +311,17 @@ class renderer extends \plugin_renderer_base {
             $table->set_attribute('class', 'generaltable generalbox alltemplates');
         }
 
-        $table->set_control_variables(array(
-            TABLE_VAR_SORT => 'ssort',
-            TABLE_VAR_HIDE => 'shide',
-            TABLE_VAR_SHOW => 'sshow',
-            TABLE_VAR_IFIRST => 'sifirst',
-            TABLE_VAR_ILAST => 'silast',
-            TABLE_VAR_PAGE => 'spage'
-        ));
-
         $table->initialbars(false);
 
         $table->setup();
+
+        // Have to set width after setup() as it unsets the width attribute.
+        $table->column_style('name', 'width', '25%');
+        $table->column_style('fullname', 'width', '25%');
+        $table->column_style('personal', 'width', '15%');
+        $table->column_style('copied', 'width', '10%');
+        $table->column_style('status', 'width', '10%');
+        $table->column_style('action', 'width', '15%');
 
         if ($mytemplates) {
             $templatelist = planner::get_templatelist($table, $searchclauses, $perpage, $mytemplates);
@@ -303,48 +338,72 @@ class renderer extends \plugin_renderer_base {
             }
         }
 
-        foreach ($templatelist as $template) {
-            $data = array();
-            $data[] = $template->name;
-            $data[] = fullname($template);
-            $statuslink = '';
-            if ($template->personal == '0') {
-                $data[] = get_string('global', 'planner');
-            } else {
-                $data[] = get_string('personal', 'planner');
-            }
-            $data[] = $template->copied;
-            if ($template->status == '1') {
-                $data[] = get_string('enabled', 'planner');
-            } else {
-                $data[] = get_string('disabled', 'planner');
-            }
-            $viewlink = \html_writer::link('#', $this->output->pix_icon('t/viewdetails', get_string('view')), array(
-                'data-action' => 'viewtemplate',
-                'data-templateid' => $template->id,
-                'id' => 'toggle-template-modal-' . $template->id));
-            if ($template->userid == $USER->id || $isadmin) {
-                if ($template->status == '1') {
-                    $statuslink = $this->output->action_icon($pageurl.'&id='.$template->id.'&action=disable&sesskey='.sesskey(),
-                    new \pix_icon('t/hide', get_string('disabletemplate', 'planner')));
+        if ($templatelist->valid()) {
+            foreach ($templatelist as $template) {
+                $data = [];
+                $data[] = $template->name;
+                $data[] = fullname($template);
+                $statuslink = '';
+                if ($template->personal == '0') {
+                    $data[] = get_string('global', 'planner');
                 } else {
-                    $statuslink = $this->output->action_icon($pageurl.'&id='.$template->id.'&action=enable&sesskey='.sesskey(),
-                    new \pix_icon('t/show', get_string('enabletemplate', 'planner')));
+                    $data[] = get_string('personal', 'planner');
                 }
-                $editlink = $this->output->action_icon(new \moodle_url('/mod/planner/managetemplate.php',
-                    array('id' => $template->id, 'cid' => $cid)), new \pix_icon('t/edit', get_string('edit')));
-                $deletelink = $this->output->action_icon(new \moodle_url('/mod/planner/template.php', array('id' => $template->id,
-                'action' => 'delete', 'cid' => $cid, 'sesskey' => sesskey())), new \pix_icon('t/delete', get_string('delete')));
-                $data[] = $viewlink . $statuslink . ' ' . $editlink . '' . $deletelink;
-            } else {
-                $data[] = $viewlink . $statuslink;
+                $data[] = $template->copied;
+                if ($template->status == '1') {
+                    $data[] = get_string('enabled', 'planner');
+                } else {
+                    $data[] = get_string('disabled', 'planner');
+                }
+                $viewlink = \html_writer::link(
+                    '#',
+                    $this->output->pix_icon('t/viewdetails', get_string('view')),
+                    [
+                        'data-action' => 'viewtemplate',
+                        'data-templateid' => $template->id,
+                        'id' => 'toggle-template-modal-' . $template->id
+                    ]
+                );
+                if ($template->userid == $USER->id || $isadmin) {
+                    if ($template->status == '1') {
+                        $statuslink = $this->output->action_icon(
+                            $pageurl . '&id=' . $template->id . '&action=disable&sesskey=' . sesskey(),
+                            new \pix_icon('t/hide', get_string('disabletemplate', 'planner'))
+                        );
+                    } else {
+                        $statuslink = $this->output->action_icon(
+                            $pageurl . '&id=' . $template->id . '&action=enable&sesskey=' . sesskey(),
+                            new \pix_icon('t/show', get_string('enabletemplate', 'planner'))
+                        );
+                    }
+                    $editlink = $this->output->action_icon(
+                        new \moodle_url('/mod/planner/managetemplate.php', ['id' => $template->id, 'cid' => $cid]),
+                        new \pix_icon('t/edit', get_string('edit'))
+                    );
+                    $deletelink = $this->output->action_icon(
+                        new \moodle_url(
+                            '/mod/planner/template.php',
+                            ['id' => $template->id, 'action' => 'delete', 'cid' => $cid, 'sesskey' => sesskey()]
+                        ),
+                        new \pix_icon('t/delete', get_string('delete'))
+                    );
+                    $data[] = $viewlink . $statuslink . ' ' . $editlink . '' . $deletelink;
+                } else {
+                    $data[] = $viewlink . $statuslink;
+                }
+                $table->add_data($data);
             }
-            $table->add_data($data);
-        }
-        $table->finish_output();
-        if (!$mytemplates) {
-            echo $this->output->box_end();
-            echo $this->output->footer();
+            $table->finish_output();
+            if (!$mytemplates) {
+                echo $this->output->box_end();
+                echo $this->output->footer();
+            }
+        } else {
+            echo '<h4>' . get_string('nothingtodisplay') . '</h4>';
+            if (!$mytemplates) {
+                echo $this->output->box_end();
+                echo $this->output->footer();
+            }
         }
     }
 
@@ -357,16 +416,19 @@ class renderer extends \plugin_renderer_base {
      * @param int $cid
      * @return string
      */
-    public function display_template_delete_page($plannertemplatedata, $pageurl, $id, $cid) {
+    public function display_template_delete_page(object $plannertemplatedata, string $pageurl, int $id, int $cid): string {
         $out = '';
         $out .= $this->output->header();
         $out .= $this->output->heading(get_string('deletetemplate', 'planner'));
-        $optionsyes = array('id' => $id, 'confirm' => md5($id), 'sesskey' => sesskey(), 'action' => 'delete', 'cid' => $cid);
+        $optionsyes = ['id' => $id, 'confirm' => md5($id), 'sesskey' => sesskey(), 'action' => 'delete', 'cid' => $cid];
         $deleteurl = new \moodle_url($pageurl, $optionsyes);
         $deletebutton = new \single_button($deleteurl, get_string('delete'), 'post');
 
-        $out .= $this->output->confirm(get_string('deletetemplatecheck', 'planner', "'$plannertemplatedata->name'"),
-        $deletebutton, $pageurl);
+        $out .= $this->output->confirm(
+            get_string('deletetemplatecheck', 'planner', "'$plannertemplatedata->name'"),
+            $deletebutton,
+            $pageurl
+        );
         $out .= $this->output->footer();
         echo $out;
         die;
@@ -378,23 +440,24 @@ class renderer extends \plugin_renderer_base {
      * @param object $course
      * @param object $planner
      * @param object $cm
+     * @return string
      */
-    public function display_print_page($course, $planner, $cm) {
+    public function display_print_page(object $course, object $planner, object $cm): string {
         global $DB, $USER;
 
         // Get necessary data.
         $time = $planner->get_planner_times($cm);
-        $templatestepdata = $DB->get_records_sql("SELECT * FROM {planner_step} WHERE plannerid = '".
-                                                 $planner->id."' ORDER BY id ASC");
-        $userstartdate = $DB->get_record_sql("SELECT pu.* FROM {planner_userstep} pu JOIN {planner_step} ps ON (ps.id = pu.stepid)
-            WHERE ps.plannerid = '".$cm->instance."' AND pu.userid = '".$USER->id."' ORDER BY pu.id ASC LIMIT 1");
-        $userenddate = $DB->get_record_sql("SELECT pu.* FROM {planner_userstep} pu JOIN {planner_step} ps ON (ps.id = pu.stepid)
-            WHERE ps.plannerid = '".$cm->instance."' AND pu.userid = '".$USER->id."' ORDER BY pu.id DESC LIMIT 1");
+        $templatestepdata = planner::get_all_steps($planner->id);
+        $sql = 'SELECT pu.*
+                  FROM {planner_userstep} pu
+                  JOIN {planner_step} ps ON (ps.id = pu.stepid)
+                 WHERE ps.plannerid = :plannerid AND pu.userid = :userid ORDER BY pu.id ';
+        $userstartdate = $DB->get_record_sql($sql . 'ASC', ['plannerid' => $cm->instance, 'userid' => $USER->id]);
+        $userenddate = $DB->get_record_sql($sql . 'DESC', ['plannerid' => $cm->instance, 'userid' => $USER->id]);
+
         $datediff = $time->endtime - $time->starttime;
         $days = round($datediff / (60 * 60 * 24));
-        $templateuserstepdata = $DB->get_records_sql("SELECT pu.*,ps.name,ps.description FROM {planner_userstep} pu
-            JOIN {planner_step} ps ON (ps.id = pu.stepid)
-            WHERE ps.plannerid = '".$cm->instance."' AND pu.userid = '".$USER->id."' ORDER BY pu.id ASC ");
+        $templateuserstepdata = planner::get_all_usersteps($cm->instance, $USER->id);
         if ($userstartdate) {
             if ($userstartdate->timestart) {
                 $time->starttime = $userstartdate->timestart;
@@ -404,31 +467,31 @@ class renderer extends \plugin_renderer_base {
         // Start output.
         $out = '';
         $out .= $this->output->header();
-        $site = $DB->get_record("course", array("id" => 1));
+        $site = $DB->get_record("course", ["id" => 1]);
         $context = \context_module::instance($cm->id);
 
         $printtext = get_string('print', 'planner');
-        $printlinkatt = array('onclick' => 'window.print();return false;', 'class' => 'planner_no_print printicon');
+        $printlinkatt = ['onclick' => 'window.print();return false;', 'class' => 'planner_no_print printicon'];
         $printiconlink = \html_writer::link('#', $printtext, $printlinkatt);
-        $out .= \html_writer::tag('div', $printiconlink, array('class' => 'displayprinticon'));
+        $out .= \html_writer::tag('div', $printiconlink, ['class' => 'displayprinticon']);
 
-        $out .= \html_writer::tag('div', userdate(time()), array('class' => 'displaydate'));
+        $out .= \html_writer::tag('div', userdate(time()), ['class' => 'displaydate']);
 
         $sitename = get_string("site") . ': <span class="strong">' . format_string($site->fullname) . '</span>';
-        $out .= \html_writer::tag('div', $sitename, array('class' => 'sitename'));
+        $out .= \html_writer::tag('div', $sitename, ['class' => 'sitename']);
 
         $coursename = get_string("course") . ': <span class="strong">' . format_string($course->fullname)
         . ' ('. format_string($course->shortname) . ')</span>';
-        $out .= \html_writer::tag('div', $coursename, array('class' => 'coursename'));
+        $out .= \html_writer::tag('div', $coursename, ['class' => 'coursename']);
 
         $modname = get_string("modulename", "planner") . ': <span class="strong">' .
                    format_string($planner->name, true) . '</span>';
-        $out .= \html_writer::tag('div', $modname, array('class' => 'modname'));
+        $out .= \html_writer::tag('div', $modname, ['class' => 'modname']);
 
         if (!html_is_blank($planner->intro)) {
             $plannerdescription = get_string("description", "planner") . ':
             <span class="strong">' . format_string(format_module_intro('planner', $planner, $cm->id), true) . '</span>';
-            $out .= \html_writer::tag('div', $plannerdescription, array('class' => 'modname'));
+            $out .= \html_writer::tag('div', $plannerdescription, ['class' => 'modname']);
         }
         $plannerstart = get_string('plannerdefaultstartingon', 'planner').' : <span class="strong">'
         .userdate($time->defaultstarttime, get_string('strftimedatefullshort')).'</span>';
@@ -458,7 +521,7 @@ class renderer extends \plugin_renderer_base {
             $adminprint = '';
             $totaltime = $time->endtime - $time->starttime;
             $exsitingsteptime = $time->starttime;
-            $stepsdata = array();
+            $stepsdata = [];
             foreach ($templatestepdata as $stepkey => $stepval) {
                 $existingsteptemp = ($totaltime * $stepval->timeallocation) / 100;
                 $exsitingsteptime = $existingsteptemp + $exsitingsteptime;
@@ -514,20 +577,20 @@ class renderer extends \plugin_renderer_base {
      * @param int $groupuserid
      * @param int $group
      * @param object $planner
-     * @return string
+     * @return void
      */
-    public function display_report_group_dropdown($course, $groupuserid, $group, $planner) {
+    public function display_report_group_dropdown(object $course, int $groupuserid, int $group, object $planner): void {
         $out = '';
         $out .= $this->output->header();
         $out .= $this->output->heading(get_string('reportheading', 'planner', $planner->name));
         $out .= $this->output->container_start('progressoverviewmenus');
 
-        $groupids = array();
-        $groupidnums = array();
+        $groupids = [];
+        $groupidnums = [];
         $groups = groups_get_all_groups($course->id, $groupuserid);
         $groupings = ($groupuserid == 0 ? groups_get_all_groupings($course->id) : []);
         if (!empty($groups) || !empty($groupings)) {
-            $groupstodisplay = ($groupuserid == 0 ? array(0 => get_string('allparticipants')) : []);
+            $groupstodisplay = ($groupuserid == 0 ? [0 => get_string('allparticipants')] : []);
             foreach ($groups as $groupidnum => $groupobject) {
                 $groupid = 'group-'.$groupidnum;
                 $groupstodisplay[$groupid] = format_string($groupobject->name);
@@ -563,14 +626,21 @@ class renderer extends \plugin_renderer_base {
      * @param int $group
      * @return string
      */
-    public function display_report_table($plannersteps, $planner, $pageurl, $students, $course, $id, $group) {
-        global $DB;
+    public function display_report_table(
+        int $plannersteps,
+        object $planner,
+        string $pageurl,
+        array $students,
+        object $course,
+        int $id,
+        int $group
+    ): string {
         $out = '';
 
         if ($plannersteps) {
             $out .= $this->output->box_start('generalbox');
-            $tablecolumns = array();
-            $tableheaders = array();
+            $tablecolumns = [];
+            $tableheaders = [];
             $tablecolumns[] = 'name';
             $tablecolumns[] = 'email';
             for ($i = 1; $i <= $plannersteps; $i++) {
@@ -597,11 +667,9 @@ class renderer extends \plugin_renderer_base {
             $table->setup();
             if ($students) {
                 foreach ($students as $studentdata) {
-                    $getusersteps = $DB->get_records_sql("SELECT pus.*  FROM {planner_userstep} pus
-                    JOIN {planner_step} ps ON (ps.id = pus.stepid) WHERE ps.plannerid = '".$planner->id."'
-                    AND pus.userid = '".$studentdata->id."' ORDER BY pus.stepid ASC");
-                    $data = array();
-                    $params = array('id' => $studentdata->id);
+                    $usersteps = planner::get_all_usersteps($planner->id, $studentdata->id);
+                    $data = [];
+                    $params = ['id' => $studentdata->id];
                     $params['course'] = $course->id;
                     if ($studentdata->idnumber) {
                         $data[] = fullname($studentdata).'<br/>('.$studentdata->idnumber.')';
@@ -609,7 +677,7 @@ class renderer extends \plugin_renderer_base {
                         $data[] = \html_writer::link(new \moodle_url("/user/view.php", $params), fullname($studentdata));
                     }
                     $data[] = $studentdata->email;
-                    foreach ($getusersteps as $step) {
+                    foreach ($usersteps as $step) {
                         if ($step->completionstatus == '1') {
                             $data[] = get_string('completed', 'planner');
                         } else {
@@ -626,7 +694,7 @@ class renderer extends \plugin_renderer_base {
         if (count($students) > 0) {
             $out .= '<div style="text-align:center">';
             $out .= $this->output->single_button(new \moodle_url('report.php',
-                array('id' => $id, 'format' => 'csv', 'group' => $group)),
+                ['id' => $id, 'format' => 'csv', 'group' => $group]),
             get_string('downloadcsv', 'planner'));
             $out .= '</div>';
         }

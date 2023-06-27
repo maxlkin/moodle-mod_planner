@@ -50,16 +50,17 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
 
         mtrace(' processing delete activity planner cron ...');
 
-        $plannerid = $DB->get_record('modules', array('name' => 'planner', 'visible' => '1'));
+        $plannerid = $DB->get_record('modules', ['name' => 'planner', 'visible' => '1']);
         if ($plannerid) {
-            $allplanners = $DB->get_records_sql("SELECT p.*, cm.instance, cm.id as cmid
-                    FROM {planner} p
-                    JOIN {course_modules} cm ON (cm.instance = p.id AND cm.module = ".$plannerid->id.")
-                    WHERE  cm.visible = 1");
+            $sql = 'SELECT p.*, cm.instance, cm.id AS cmid
+                      FROM {planner} p
+                      JOIN {course_modules} cm ON (cm.instance = p.id AND cm.module = :plannerid)
+                     WHERE  cm.visible = 1';
+            $allplanners = $DB->get_records_sql($sql, ['plannerid' => $plannerid->id]);
 
             if ($allplanners) {
-                $studentroleid = $DB->get_record('role', array('shortname' => 'student'));
-                $teacherroleid = $DB->get_record('role', array('shortname' => 'editingteacher'));
+                $studentroleids = $DB->get_records('role', ['archetype' => 'student']);
+                $teacherroleids = $DB->get_records('role', ['archetype' => 'editingteacher']);
                 $supportuser = \core_user::get_support_user();
                 $deletedactivityemailsubject = get_string('deletedactivityemailsubject', 'mod_planner');
                 $deletedactivitystudentsubject = get_string('deletedactivitystudentsubject', 'mod_planner');
@@ -67,45 +68,64 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                 $deletedactivitystudentemail = get_config('planner', 'deletedactivitystudentemail');
 
                 foreach ($allplanners as $planner) {
-                    $cminfo = $DB->get_record('course_modules', array('id' => $planner->activitycmid));
+                    $cminfo = $DB->get_record('course_modules', ['id' => $planner->activitycmid]);
                     if ((!$cminfo) || ($cminfo->deletioninprogress == '1')) {
 
                         $courseid = $planner->course;
-                        $course = $DB->get_record('course', array('id' => $courseid));
+                        $course = $DB->get_record('course', ['id' => $courseid]);
                         $coursecontext = \context_course::instance($courseid);
-                        $teachers = get_role_users($teacherroleid->id, $coursecontext);
-
+                        $teachers = [];
+                        foreach ($teacherroleids as $teacherroleid) {
+                            $teachers[] = get_role_users($teacherroleid->id, $coursecontext);
+                        }
+                        $teachers = reset($teachers);
                         if ($teachers) {
                             if ($deletedactivityemail) {
                                 $subject = $deletedactivityemailsubject;
                                 foreach ($teachers as $teacher) {
-                                    $deletedactivityemail = str_replace('{$a->firstname}',
-                                    $teacher->firstname, $deletedactivityemail);
-                                    $deletedactivityemail = str_replace('{$a->plannername}',
-                                    format_string($planner->name), $deletedactivityemail);
-                                    $deletedactivityemail = str_replace('{$a->coursename}',
-                                    format_string($course->fullname), $deletedactivityemail);
-                                    $deletedactivityemail = str_replace('{$a->courselink}',
-                                    $CFG->wwwroot.'/course/view.php?id='.$courseid, $deletedactivityemail);
-                                    $deletedactivityemail = str_replace('{$a->admin}',
-                                    fullname($supportuser), $deletedactivityemail);
+                                    $teacher = \core_user::get_user($teacher->id);
+                                    $deletedactivityemail = str_replace(
+                                        '{$a->firstname}',
+                                        $teacher->firstname,
+                                        $deletedactivityemail
+                                    );
+                                    $deletedactivityemail = str_replace(
+                                        '{$a->plannername}',
+                                        format_string($planner->name),
+                                        $deletedactivityemail
+                                    );
+                                    $deletedactivityemail = str_replace(
+                                        '{$a->coursename}',
+                                        format_string($course->fullname),
+                                        $deletedactivityemail
+                                    );
+                                    $deletedactivityemail = str_replace(
+                                        '{$a->courselink}',
+                                        $CFG->wwwroot.'/course/view.php?id='.$courseid,
+                                        $deletedactivityemail
+                                    );
+                                    $deletedactivityemail = str_replace(
+                                        '{$a->admin}',
+                                        fullname($supportuser),
+                                        $deletedactivityemail
+                                    );
                                     $message = $deletedactivityemail;
-                                    $messagetext = html_to_text($messagehtml);
                                     $messagehtml = format_text($message, FORMAT_MOODLE);
+                                    $messagetext = html_to_text($messagehtml);
 
                                     $eventdata = new \core\message\message();
-                                    $eventdata->courseid         = $courseid;
-                                    $eventdata->modulename       = 'planner';
-                                    $eventdata->userfrom         = $supportuser;
-                                    $eventdata->userto           = $teacher;
-                                    $eventdata->subject          = $subject;
-                                    $eventdata->fullmessage      = $messagetext;
+                                    $eventdata->courseid          = $courseid;
+                                    $eventdata->modulename        = 'planner';
+                                    $eventdata->userfrom          = $supportuser;
+                                    $eventdata->userto            = $teacher;
+                                    $eventdata->subject           = $subject;
+                                    $eventdata->fullmessage       = $messagetext;
                                     $eventdata->fullmessageformat = FORMAT_PLAIN;
-                                    $eventdata->fullmessagehtml  = $messagehtml;
-                                    $eventdata->smallmessage     = $subject;
-                                    $eventdata->name            = 'planner_notification';
-                                    $eventdata->component       = 'mod_planner';
-                                    $eventdata->notification    = 1;
+                                    $eventdata->fullmessagehtml   = $messagehtml;
+                                    $eventdata->smallmessage      = $subject;
+                                    $eventdata->name              = 'planner_notification';
+                                    $eventdata->component         = 'mod_planner';
+                                    $eventdata->notification      = 1;
                                     $customdata = [
                                         'cmid' => $planner->cmid,
                                         'instance' => $planner->instance
@@ -117,34 +137,48 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                             }
                         }
 
-                        $students = get_role_users($studentroleid->id, $coursecontext);
+                        $students = [];
+                        foreach ($studentroleids as $studentroleid) {
+                            $students[] = get_role_users($studentroleid->id, $coursecontext);
+                        }
+                        $students = reset($students);
                         if ($students) {
                             if ($deletedactivitystudentemail) {
                                 $subject = $deletedactivitystudentsubject;
                                 foreach ($students as $student) {
-                                    $deletedactivitystudentemail = str_replace('{$a->firstname}',
-                                    $student->firstname, $deletedactivitystudentemail);
-                                    $deletedactivitystudentemail = str_replace('{$a->plannername}',
-                                    format_string($planner->name), $deletedactivitystudentemail);
-                                    $deletedactivitystudentemail = str_replace('{$a->admin}',
-                                    fullname($supportuser), $deletedactivitystudentemail);
+                                    $student = \core_user::get_user($student->id);
+                                    $deletedactivitystudentemail = str_replace(
+                                        '{$a->firstname}',
+                                        $student->firstname,
+                                        $deletedactivitystudentemail
+                                    );
+                                    $deletedactivitystudentemail = str_replace(
+                                        '{$a->plannername}',
+                                        format_string($planner->name),
+                                        $deletedactivitystudentemail
+                                    );
+                                    $deletedactivitystudentemail = str_replace(
+                                        '{$a->admin}',
+                                        fullname($supportuser),
+                                        $deletedactivitystudentemail
+                                    );
                                     $message = $deletedactivitystudentemail;
                                     $messagehtml = format_text($message, FORMAT_MOODLE);
                                     $messagetext = html_to_text($messagehtml);
 
                                     $eventdata = new \core\message\message();
-                                    $eventdata->courseid         = $courseid;
-                                    $eventdata->modulename       = 'planner';
-                                    $eventdata->userfrom         = $supportuser;
-                                    $eventdata->userto           = $student;
-                                    $eventdata->subject          = $subject;
-                                    $eventdata->fullmessage      = $messagetext;
+                                    $eventdata->courseid          = $courseid;
+                                    $eventdata->modulename        = 'planner';
+                                    $eventdata->userfrom          = $supportuser;
+                                    $eventdata->userto            = $student;
+                                    $eventdata->subject           = $subject;
+                                    $eventdata->fullmessage       = $messagetext;
                                     $eventdata->fullmessageformat = FORMAT_PLAIN;
-                                    $eventdata->fullmessagehtml  = $messagehtml;
-                                    $eventdata->smallmessage     = $subject;
-                                    $eventdata->name            = 'planner_notification';
-                                    $eventdata->component       = 'mod_planner';
-                                    $eventdata->notification    = 1;
+                                    $eventdata->fullmessagehtml   = $messagehtml;
+                                    $eventdata->smallmessage      = $subject;
+                                    $eventdata->name              = 'planner_notification';
+                                    $eventdata->component         = 'mod_planner';
+                                    $eventdata->notification      = 1;
                                     $customdata = [
                                         'cmid' => $planner->cmid,
                                         'instance' => $planner->instance

@@ -226,9 +226,9 @@ class provider implements
         }
 
         if ($cm = get_coursemodule_from_id('planner', $context->instanceid)) {
-            if ($stepsdata = $DB->get_records("planner_step", array("plannerid" => $cm->instance))) {
+            if ($stepsdata = $DB->get_records("planner_step", ["plannerid" => $cm->instance])) {
                 foreach ($stepsdata as $step) {
-                    $DB->delete_records('planner_userstep', array('stepid' => $step->id));
+                    $DB->delete_records('planner_userstep', ['stepid' => $step->id]);
                 }
             }
         }
@@ -256,9 +256,9 @@ class provider implements
             if (!$instanceid) {
                 continue;
             }
-            if ($stepsdata = $DB->get_records("planner_step", array("plannerid" => $instanceid))) {
+            if ($stepsdata = $DB->get_records("planner_step", ["plannerid" => $instanceid])) {
                 foreach ($stepsdata as $step) {
-                    $DB->delete_records('planner_userstep', array('stepid' => $step->id, 'userid' => $userid));
+                    $DB->delete_records('planner_userstep', ['stepid' => $step->id, 'userid' => $userid]);
                 }
             }
         }
@@ -288,7 +288,7 @@ class provider implements
         $userids = $userlist->get_userids();
         list($usersql, $userparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
 
-        if ($stepsdata = $DB->get_records("planner_step", array("plannerid" => $cm->instance))) {
+        if ($stepsdata = $DB->get_records("planner_step", ["plannerid" => $cm->instance])) {
             foreach ($stepsdata as $step) {
                 $select = "stepid = :stepid AND userid $usersql";
                 $params = ['stepid' => $step->id] + $userparams;

@@ -23,7 +23,7 @@ Feature: Test the main planner page
       | duedate                             | 1903909056           |
       | assignsubmission_onlinetext_enabled | 1                    |
     And I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
@@ -48,8 +48,8 @@ Feature: Test the main planner page
     Then I should see "Site: Acceptance test site"
     And I should see "Course: Course 1 (C1)"
     And I should see "Planner: Test planner name"
-    And I should see "Planner Default Starting On : 26/02/15"
-    And I should see "Planner Default Ending On : 2/05/30"
+    And I should see "Planner default starting on : 26/02/15"
+    And I should see "Planner default ending on : 2/05/30"
     And I should see "According to the dates you have entered, you have"
     And I should see "Step 1 - Understanding your assignment"
     And I should see "Test step 1 description"
@@ -57,7 +57,7 @@ Feature: Test the main planner page
 
   Scenario: Test the report page
     Given I am on the "Test planner name" "planner activity" page
-    And I press "Calculate Student Steps"
+    And I press "Calculate student steps"
     When I navigate to "Report" in current page administration
     Then I should see "Test planner name Report"
     And I should see "Vinnie Student1"
@@ -66,7 +66,7 @@ Feature: Test the main planner page
 
   Scenario: Test the report page with completed activity
     Given I am on the "Test planner name" "planner activity" page
-    And I press "Calculate Student Steps"
+    And I press "Calculate student steps"
     And I log in as "student1"
     And I am on "Course 1" course homepage
     And I click on "Test assignment name" "link"

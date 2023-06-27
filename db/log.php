@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$logs = array(
-    array('module' => 'planner', 'action' => 'add', 'mtable' => 'planner', 'field' => 'name'),
-    array('module' => 'planner', 'action' => 'update', 'mtable' => 'planner', 'field' => 'name'),
-);
+$logs = [
+    ['module' => 'planner', 'action' => 'add', 'mtable' => 'planner', 'field' => 'name'],
+    ['module' => 'planner', 'action' => 'update', 'mtable' => 'planner', 'field' => 'name'],
+];

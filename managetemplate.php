@@ -31,14 +31,14 @@ $totalsteps = optional_param('totalsteps', '0', PARAM_INT);   // Total steps.
 $cid = optional_param('cid', 0, PARAM_INT);
 
 if ($cid) {
-    if (! $course = $DB->get_record("course", array("id" => $cid))) {
+    if (! $course = $DB->get_record("course", ["id" => $cid])) {
         throw new moodle_exception('coursemisconf');
     }
     require_login($course);
     $context = context_course::instance($course->id);
-    navigation_node::override_active_url(new moodle_url('/mod/planner/template.php', array('cid' => $cid)));
+    navigation_node::override_active_url(new moodle_url('/mod/planner/template.php', ['cid' => $cid]));
     $PAGE->set_heading($course->fullname);
-    $PAGE->set_url(new moodle_url('/mod/planner/template.php', array('cid' => $cid)));
+    $PAGE->set_url(new moodle_url('/mod/planner/template.php', ['cid' => $cid]));
     $PAGE->set_context($context);
 } else {
     require_login(0, false);
@@ -47,17 +47,17 @@ if ($cid) {
     admin_externalpage_setup('planner/template');
 }
 
-$redirecturl = new moodle_url("/mod/planner/template.php", array('cid' => $cid));
+$redirecturl = new moodle_url("/mod/planner/template.php", ['cid' => $cid]);
 
-$PAGE->set_url('/mod/planner/managetemplate.php', array('id' => $id, 'cid' => $cid));
+$PAGE->set_url('/mod/planner/managetemplate.php', ['id' => $id, 'cid' => $cid]);
 
-$templatedata = array();
-$templatestepdata = array();
+$templatedata = [];
+$templatestepdata = [];
 if ($id) {
-    if (!$templatedata = $DB->get_record('plannertemplate', array('id' => $id))) {
+    if (!$templatedata = $DB->get_record('plannertemplate', ['id' => $id])) {
         throw new moodle_exception('invalidtemplate', 'planner');
     }
-    $templatestepdata = $DB->get_records_sql("SELECT * FROM {plannertemplate_step} WHERE plannerid = '".$id."' ORDER BY id ASC");
+    $templatestepdata = $DB->get_records('plannertemplate_step', ['plannerid' => $id], 'id ASC');
 }
 
 if ($id) {
@@ -68,8 +68,10 @@ if ($id) {
     $PAGE->set_heading("{$SITE->shortname}");
 }
 
-$templateform = new mod_planner\form\template_form('managetemplate.php', array('id' => $id, 'cid' => $cid,
-'templatedata' => $templatedata, 'templatestepdata' => $templatestepdata));
+$templateform = new mod_planner\form\template_form(
+    'managetemplate.php',
+    ['id' => $id, 'cid' => $cid, 'templatedata' => $templatedata, 'templatestepdata' => $templatestepdata]
+);
 
 if ($templateform->is_cancelled()) {
     redirect($redirecturl);

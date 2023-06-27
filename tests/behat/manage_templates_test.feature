@@ -3,7 +3,7 @@ Feature: Test adding, editing, deleting, and searching for templates
 
   Scenario: Test adding template
     Given I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     When I set the field "Step 1 time allocation" to "0"
@@ -26,7 +26,7 @@ Feature: Test adding, editing, deleting, and searching for templates
 
   Scenario: Test enabling/disabling template
     Given I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
@@ -38,7 +38,7 @@ Feature: Test adding, editing, deleting, and searching for templates
 
   Scenario: Test deleting template
     Given I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
@@ -48,8 +48,12 @@ Feature: Test adding, editing, deleting, and searching for templates
     Then I should not see "Template 1"
 
   Scenario: Test searching templates
-    Given I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    Given the following "courses" exist:
+      | fullname | shortname | category | enablecompletion | showcompletionconditions |
+      | Course 1 | C1        | 0        | 1                | 1                        |
+    And I log in as "admin"
+    And I am on "Course 1" course homepage with editing mode on
+    And I navigate to "Manage templates" in current page administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
@@ -59,6 +63,11 @@ Feature: Test adding, editing, deleting, and searching for templates
     When I set the field "Search" to "per"
     And I press "Submit"
     Then I should see "Personal"
+    And I should not see "Template 1"
+    When I set the field "Search" to "Template 1"
+    And I press "Submit"
+    Then I should see "Template 1"
+    And I should not see "Personal"
 
   Scenario: Test that the my templates table only displays templates created by the user
     Given the following "users" exist:
@@ -71,13 +80,13 @@ Feature: Test adding, editing, deleting, and searching for templates
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
     And I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
     And I log in as "teacher1"
     And I am on "Course 1" course homepage
-    When I navigate to "Manage Templates" in current page administration
+    When I navigate to "Manage templates" in current page administration
     And I press "Add new template"
     And I set the field "Template name" to "Template teacher1"
     And I press "Submit"
@@ -97,7 +106,7 @@ Feature: Test adding, editing, deleting, and searching for templates
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
     When I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
@@ -107,7 +116,7 @@ Feature: Test adding, editing, deleting, and searching for templates
     And "Delete" "link" should be visible
     When I log in as "teacher1"
     And I am on "Course 1" course homepage
-    And I navigate to "Manage Templates" in current page administration
+    And I navigate to "Manage templates" in current page administration
     Then "View" "link" should be visible
     And "Disable this template" "link" should not be visible
     And "Edit" "link" should not be visible
@@ -115,7 +124,7 @@ Feature: Test adding, editing, deleting, and searching for templates
 
   Scenario: Test the view template modal
     Given I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"

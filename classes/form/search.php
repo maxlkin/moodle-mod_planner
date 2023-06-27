@@ -43,8 +43,8 @@ class search extends \moodleform {
 
         // By default just show the 'setting' field.
         $group[] =& $mform->createElement('text', 'setting', get_string('search'));
-        $group[] =& $mform->createElement('submit', get_string('search'), 'Submit');
-        $mform->addGroup($group, 'searchgroup', get_string('search'));
-        $mform->setType('searchgroup[setting]', PARAM_TEXT);
+        $group[] =& $mform->createElement('submit', get_string('search'), get_string('submit'));
+        $mform->addGroup($group, 'planner_searchgroup', get_string('search'));
+        $mform->setType('planner_searchgroup[setting]', PARAM_TEXT);
     }
 }

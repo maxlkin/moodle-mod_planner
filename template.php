@@ -29,20 +29,21 @@ require_once($CFG->libdir . '/tablelib.php');
 define('DEFAULT_PAGE_SIZE', 10);
 $perpage = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
 $spage = optional_param('spage', 0, PARAM_INT);
+$page = optional_param('page', 0, PARAM_INT);
 $confirm      = optional_param('confirm', '', PARAM_ALPHANUM);
 $action       = optional_param('action', null, PARAM_ALPHANUMEXT);
 $id           = optional_param('id', null, PARAM_INT);
 $cid           = optional_param('cid', 0, PARAM_INT);
 
 if ($cid) {
-    if (! $course = $DB->get_record("course", array("id" => $cid))) {
+    if (! $course = $DB->get_record("course", ["id" => $cid])) {
         throw new moodle_exception('coursemisconf');
     }
     require_login($course);
     $context = context_course::instance($course->id);
-    navigation_node::override_active_url(new moodle_url('/mod/planner/template.php', array('cid' => $cid)));
+    navigation_node::override_active_url(new moodle_url('/mod/planner/template.php', ['cid' => $cid]));
     $PAGE->set_heading($course->fullname);
-    $PAGE->set_url(new moodle_url('/mod/planner/template.php', array('cid' => $cid)));
+    $PAGE->set_url(new moodle_url('/mod/planner/template.php', ['cid' => $cid]));
     $PAGE->set_context($context);
 
 } else {
@@ -55,16 +56,21 @@ $searchform = planner::create_template_search_form($cid);
 $searchclauses = $searchform['searchclauses'];
 $mform = $searchform['mform'];
 
-$pageurl = new moodle_url('/mod/planner/template.php', array(
-    'spage' => $spage,
-    'cid' => $cid,
-    'setting' => $searchclauses));
+$pageurl = new moodle_url(
+    '/mod/planner/template.php',
+    [
+        'spage' => $spage,
+        'page' => $page,
+        'cid' => $cid,
+        'setting' => $searchclauses
+    ]
+);
 
 planner::template_crud_handler($action, $id, $confirm, $pageurl, $cid);
 
 $PAGE->set_url($pageurl);
 $PAGE->set_title("{$SITE->shortname}: " . get_string('manage_templates', 'planner'));
-$PAGE->requires->js_call_amd('mod_planner/viewtemplate', 'init');
+$PAGE->requires->js_call_amd('mod_planner/viewtemplate', 'init', [$cid]);
 
 $output = $renderer->setup_template($cid);
 echo $output;

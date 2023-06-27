@@ -28,13 +28,13 @@ require_once("lib.php");
 use mod_planner\planner;
 
 $id = required_param('id', PARAM_INT);  // Course Module ID.
-$url = new moodle_url('/mod/print/print.php', array('id' => $id));
+$url = new moodle_url('/mod/print/print.php', ['id' => $id]);
 
 $PAGE->set_url($url);
 if (! $cm = get_coursemodule_from_id('planner', $id)) {
     throw new moodle_exception('invalidcoursemodule');
 }
-if (! $course = $DB->get_record("course", array("id" => $cm->course))) {
+if (! $course = $DB->get_record("course", ["id" => $cm->course])) {
     throw new moodle_exception('coursemisconf');
 }
 if (! $planner = planner::create_planner_by_id($cm->instance)) {
@@ -45,7 +45,7 @@ require_course_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
 // Prepare format_string/text options.
-$fmtoptions = array('context' => $context);
+$fmtoptions = ['context' => $context];
 $PAGE->set_pagelayout('print');
 $PAGE->set_title($course->shortname.":".format_string($planner->name));
 $PAGE->set_heading($course->fullname);

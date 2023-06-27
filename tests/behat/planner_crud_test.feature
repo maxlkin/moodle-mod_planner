@@ -22,7 +22,7 @@ Feature: Test adding, deleting, and editing planner activities
       | allowsubmissionsfromdate | 1424908800           |
       | duedate                  | 1424908800           |
     And I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
@@ -60,7 +60,7 @@ Feature: Test adding, deleting, and editing planner activities
     And I set the field "Step 6 description" to "Test step 6 description"
     And I press "Save and display"
     Then I should see "Test step 1 description"
-    When I press "Calculate Student Steps"
+    When I press "Calculate student steps"
     Then I should see "Student steps updated"
     When I click on "Settings" "link"
     Then I should not see "Template 1"
@@ -79,7 +79,7 @@ Feature: Test adding, deleting, and editing planner activities
     And I press "Save as new template"
     And I set the field "Template name" to "Template 2"
     And I click on "Save as new template" "button" in the "Save as new template" "dialogue"
-    And I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     Then I should see "Template 1"
     And I should see "Template 2"
     When I click on "View" "link" in the "Template 2" "table_row"
@@ -87,7 +87,7 @@ Feature: Test adding, deleting, and editing planner activities
     And I should see "Test step 1 name new"
 
   Scenario: Test that the save as new template button does not save if the name isn't unique
-    Given I navigate to "Plugins > Activity modules > Planner > Manage Templates" in site administration
+    Given I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"

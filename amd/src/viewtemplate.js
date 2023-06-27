@@ -52,12 +52,12 @@ const show = async (trigger, { focusOnClose = null } = {}) => {
         methodname: 'mod_planner_fetch_template_data',
         args: {
             templateid: trigger.dataset.templateid,
+            courseid: courseId,
         },
         done: async (data) => {
             const modal = await ModalFactory.create({
                 title: data.plannertemplate.name,
                 body: Templates.render('mod_planner/modal_view_template', data),
-                footer: 'This is a footer',
                 large: true,
             });
 
@@ -80,14 +80,22 @@ const show = async (trigger, { focusOnClose = null } = {}) => {
 
 /**
  * Set up the save new template actions.
+ *
+ * @param {integert} course The course id.
  */
-export const init = () => {
+export const init = (course) => {
+    courseId = course;
     if (!init.initialised) {
         // Event listeners should only be registered once.
         init.initialised = true;
         registerEventListeners();
     }
 };
+
+/**
+ * The course id.
+ */
+let courseId = 0;
 
 /**
  * Whether the init function was called before.

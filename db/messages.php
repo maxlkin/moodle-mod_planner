@@ -23,6 +23,6 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$messageproviders = array(
-    'planner_notification' => array()
-);
+$messageproviders = [
+    'planner_notification' => []
+];

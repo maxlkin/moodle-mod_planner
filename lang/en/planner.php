@@ -178,6 +178,7 @@ $string['personal'] = 'Personal';
 $string['enabled'] = 'Enabled';
 $string['disabled'] = 'Disabled';
 $string['templatename'] = 'Template name';
+$string['templatename_help'] = 'The template name must be unique';
 $string['recalculateschedule'] = 'Re-calculate schedule!';
 $string['startdatewarning1'] = 'Start date should not be less than default start date';
 $string['startdatewarning2'] = 'Start date should not be greater than default end date';
@@ -220,6 +221,17 @@ $string['mytemplates'] = 'My templates';
 $string['templatenameunique'] = 'The template name must be unique';
 $string['activityname'] = 'Activity name';
 $string['activityname_param'] = 'Activity name: {$a}';
+
+$string['event:stepcompleted'] = 'The user with id "{$a->userid}" has had their step id "{$a->stepid}" and
+		step name "{$a->stepname}" with planner id "{$a->plannerid} completed by the user
+        with id "{$a->relateduserid}" for the planner with course module id "{$a->cmid}"';
+$string['event:steppending'] = 'The user with id "{$a->userid}" has had their step id "{$a->stepid}" and
+		step name "{$a->stepname}" with planner id "{$a->plannerid} marked as pending by the user
+        with id "{$a->relateduserid}" for the planner with course module id "{$a->cmid}"';
+$string['event:stepupdated'] = 'The user with id "{$a->userid}" has updated their steps due date with planner id
+        "{$a->plannerid}"  updated by the user with id "{$a->relateduserid}" for the planner with course module id "{$a->cmid}"';
+$string['event:userexception'] = 'The \'relateduserid\' must be set.';
+$string['event:plannerexception'] = 'The \'plannerid\' must be set in other.';
 
 $string['activitiesenabled'] = 'selecting a activity';
 $string['activitiesenabled_help'] = '* Select an assignment or quiz activity for the planner.';

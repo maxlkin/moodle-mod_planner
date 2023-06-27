@@ -27,61 +27,61 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$observers = array(
-    array(
+$observers = [
+    [
         'eventname'   => '\core\event\role_assigned',
-        'callback'    => 'mod_planner\observer::role_assigned',
-    ),
-    array(
+        'callback'    => '\mod_planner\observer::role_assigned',
+    ],
+    [
         'eventname'   => '\core\event\role_unassigned',
-        'callback'    => 'mod_planner\observer::role_unassigned',
-    ),
-    array(
+        'callback'    => '\mod_planner\observer::role_unassigned',
+    ],
+    [
         'eventname' => '\mod_assign\event\user_override_created',
-        'callback' => 'mod_planner\observer::assign_user_override_created',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::assign_user_override_created',
+    ],
+    [
         'eventname' => '\mod_assign\event\user_override_updated',
-        'callback' => 'mod_planner\observer::assign_user_override_updated',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::assign_user_override_updated',
+    ],
+    [
         'eventname' => '\mod_assign\event\user_override_deleted',
-        'callback' => 'mod_planner\observer::assign_user_override_deleted',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::assign_user_override_deleted',
+    ],
+    [
         'eventname' => '\mod_assign\event\group_override_created',
-        'callback' => 'mod_planner\observer::assign_group_override_created',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::assign_group_override_created',
+    ],
+    [
         'eventname' => '\mod_assign\event\group_override_updated',
-        'callback' => 'mod_planner\observer::assign_group_override_updated',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::assign_group_override_updated',
+    ],
+    [
         'eventname' => '\mod_assign\event\group_override_deleted',
-        'callback' => 'mod_planner\observer::assign_group_override_deleted',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::assign_group_override_deleted',
+    ],
+    [
         'eventname' => '\mod_quiz\event\user_override_created',
-        'callback' => 'mod_planner\observer::quiz_user_override_created',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::quiz_user_override_created',
+    ],
+    [
         'eventname' => '\mod_quiz\event\user_override_updated',
-        'callback' => 'mod_planner\observer::quiz_user_override_updated',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::quiz_user_override_updated',
+    ],
+    [
         'eventname' => '\mod_quiz\event\user_override_deleted',
-        'callback' => 'mod_planner\observer::quiz_user_override_deleted',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::quiz_user_override_deleted',
+    ],
+    [
         'eventname' => '\mod_quiz\event\group_override_created',
-        'callback' => 'mod_planner\observer::quiz_group_override_created',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::quiz_group_override_created',
+    ],
+    [
         'eventname' => '\mod_quiz\event\group_override_updated',
-        'callback' => 'mod_planner\observer::quiz_group_override_updated',
-    ),
-    array(
+        'callback' => '\mod_planner\observer::quiz_group_override_updated',
+    ],
+    [
         'eventname' => '\mod_quiz\event\group_override_deleted',
-        'callback' => 'mod_planner\observer::quiz_group_override_deleted',
-    ),
-);
+        'callback' => '\mod_planner\observer::quiz_group_override_deleted',
+    ],
+];
