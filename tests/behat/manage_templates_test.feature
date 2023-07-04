@@ -48,9 +48,21 @@ Feature: Test adding, editing, deleting, and searching for templates
     Then I should not see "Template 1"
 
   Scenario: Test searching templates
-    Given the following "courses" exist:
+    Given the following "users" exist:
+      | username | firstname | lastname | email                |
+      | teacher1 | Darrell   | Teacher1 | teacher1@example.com |
+    And the following "courses" exist:
       | fullname | shortname | category | enablecompletion | showcompletionconditions |
       | Course 1 | C1        | 0        | 1                | 1                        |
+    And the following "course enrolments" exist:
+      | user     | course | role           |
+      | teacher1 | C1     | editingteacher |
+    And I log in as "teacher1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I navigate to "Manage templates" in current page administration
+    And I press "Add new template"
+    And I set the field "Template name" to "Template teacher1"
+    And I press "Submit"
     And I log in as "admin"
     And I am on "Course 1" course homepage with editing mode on
     And I navigate to "Manage templates" in current page administration
@@ -68,6 +80,10 @@ Feature: Test adding, editing, deleting, and searching for templates
     And I press "Submit"
     Then I should see "Template 1"
     And I should not see "Personal"
+    When I set the field "Search" to "Teacher1"
+    And I press "Submit"
+    Then I should see "Template teacher1" in the "alltemplates" "table"
+    And "mytemplates" "table" should not exist
 
   Scenario: Test that the my templates table only displays templates created by the user
     Given the following "users" exist:

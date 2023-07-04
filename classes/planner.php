@@ -866,7 +866,7 @@ class planner {
             $wheresearch = implode(" OR ", $wheres);
         }
         if ($mytemplates && $wheresearch) {
-            $where = "WHERE pt.userid = :userid AND " . $wheresearch;
+            $where = "WHERE (pt.userid = :userid) AND (" . $wheresearch . ")";
         } else if ($mytemplates) {
             $where = "WHERE pt.userid = :userid";
         } else if ($whereteacher && $wheresearch) {
