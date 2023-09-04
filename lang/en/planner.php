@@ -121,8 +121,8 @@ $string['step5default'] = 'Create a plan / overall structure';
 $string['step5defaultallocatin'] = '5';
 $string['step6default'] = 'Write, reference, revise and proofread';
 $string['step6defaultallocatin'] = '30';
-$string['planner:manage_templates'] = 'Manage templates';
-$string['manage_templates'] = 'Manage templates';
+$string['planner:manage_templates'] = 'Manage planner templates';
+$string['manage_templates'] = 'Manage planner templates';
 $string['addtemplate'] = 'Add new template';
 $string['deletetemplate'] = 'Delete template';
 $string['deletetemplatecheck'] = 'Are you absolutely sure you want to completely delete the template {$a}?';
@@ -216,8 +216,8 @@ $string['changedateemailsubject'] = 'Activity date change email notification for
 $string['addstepstoform'] = 'Add {no} step to the form';
 $string['savenewtemplate'] = 'Save as new template';
 $string['enternewname'] = 'Enter a new name for the template';
-$string['alltemplates'] = 'All templates';
-$string['mytemplates'] = 'My templates';
+$string['alltemplates'] = 'All planner templates';
+$string['mytemplates'] = 'My planner templates';
 $string['templatenameunique'] = 'The template name must be unique';
 $string['activityname'] = 'Activity name';
 $string['activityname_param'] = 'Activity name: {$a}';
@@ -244,4 +244,4 @@ $string['templatesenabled_help'] = '* Select a template for the planner.';
 
 $string['templatesdisabled'] = 'selecting a template';
 $string['templatesdisabled_help'] = '* A template must exist to select.
-* To add a template, go to the administration block and click Manage Templates.';
+* To add a template, go to the administration block and click Manage planner templates.';

@@ -23,7 +23,7 @@ Feature: Test the main planner page
       | duedate                             | 1903909056           |
       | assignsubmission_onlinetext_enabled | 1                    |
     And I log in as "admin"
-    And I navigate to "Plugins > Activity modules > Planner > Manage templates" in site administration
+    And I navigate to "Plugins > Activity modules > Planner > Manage planner templates" in site administration
     And I press "Add new template"
     And I set the field "Template name" to "Template 1"
     And I press "Submit"
