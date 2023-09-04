@@ -407,8 +407,12 @@ function planner_reset_userdata($data) {
  * @uses FEATURE_GROUPINGS
  * @uses FEATURE_MOD_INTRO
  * @uses FEATURE_COMPLETION_TRACKS_VIEWS
+ * @uses FEATURE_COMPLETION_HAS_RULES
  * @uses FEATURE_GRADE_HAS_GRADE
  * @uses FEATURE_GRADE_OUTCOMES
+ * @uses FEATURE_BACKUP_MOODLE2
+ * @uses FEATURE_SHOW_DESCRIPTION
+ * @uses FEATURE_CONTROLS_GRADE_VISIBILITY
  * @param string $feature FEATURE_xx constant for requested feature
  * @return bool|null True if module supports feature, false if not, null if doesn't know
  */
@@ -423,11 +427,11 @@ function planner_supports($feature) {
         case FEATURE_MOD_INTRO:
             return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return true;
+            return false;
         case FEATURE_COMPLETION_HAS_RULES:
-            return true;
+            return false;
         case FEATURE_GRADE_HAS_GRADE:
-            return true;
+            return false;
         case FEATURE_GRADE_OUTCOMES:
             return true;
         case FEATURE_BACKUP_MOODLE2:
