@@ -60,6 +60,7 @@ class cron_task_datechange extends \core\task\scheduled_task {
 
             if ($allplanners) {
                 $teacherroleids = $DB->get_records('role', ['archetype' => 'editingteacher']);
+                $teachers = [];
                 $supportuser = \core_user::get_support_user();
                 $changedateemailsubject = get_string('changedateemailsubject', 'mod_planner');
                 $changedateemail = get_config('planner', 'changedateemailtemplate');
@@ -83,17 +84,19 @@ class cron_task_datechange extends \core\task\scheduled_task {
                             $courseid = $planner->course;
                             $coursecontext = \context_course::instance($courseid);
                             foreach ($teacherroleids as $teacherroleid) {
-                                $teachers[] = get_role_users($teacherroleid->id, $coursecontext);
+                                $newteachers = get_role_users($teacherroleid->id, $coursecontext);
+                                foreach ($newteachers as $newteacher) {
+                                    $teachers[] = $newteacher;
+                                }
                             }
-                            $teachers = reset($teachers);
                             if ($teachers) {
                                 if ($changedateemail) {
                                     $subject = $changedateemailsubject;
                                     foreach ($teachers as $teacher) {
-                                        $teacher = \core_user::get_user($teacher->id);
+                                        $tmpteacher = \core_user::get_user($teacher->id);
                                         $changedateemail = str_replace(
                                             '{$a->firstname}',
-                                            $teacher->firstname,
+                                            $tmpteacher->firstname,
                                             $changedateemail
                                         );
                                         $changedateemail = str_replace(
@@ -124,7 +127,7 @@ class cron_task_datechange extends \core\task\scheduled_task {
                                         $eventdata->courseid = $courseid;
                                         $eventdata->modulename = 'planner';
                                         $eventdata->userfrom = $supportuser;
-                                        $eventdata->userto = $teacher;
+                                        $eventdata->userto = $tmpteacher;
                                         $eventdata->subject = $subject;
                                         $eventdata->fullmessage = $messagetext;
                                         $eventdata->fullmessageformat = FORMAT_PLAIN;

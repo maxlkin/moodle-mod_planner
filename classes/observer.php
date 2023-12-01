@@ -577,7 +577,7 @@ class observer {
                                     $DB->insert_record('planner_userstep', $insertstep);
                                 }
                                 $planner = planner::create_planner_by_id($planner->id);
-                                $planner->update_events($userid, $stepsdata, false);
+                                $planner->update_events($userid, [], $stepsdata, false);
                             }
                         }
                     }

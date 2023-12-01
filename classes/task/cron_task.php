@@ -115,7 +115,7 @@ class cron_task extends \core\task\scheduled_task {
                         $subject = $missedemailsubject;
                         $missedemail = str_replace('{$a->firstname}', $user->firstname, $missedemail);
                         $missedemail = str_replace('{$a->stepname}', $plannerdata->name, $missedemail);
-                        $missedemail = str_replace('{$a->activityname}', format_string($modulename), $missedemail);
+                        $missedemail = str_replace('{$a->activityname}', format_string($modulename->name), $missedemail);
                         $missedemail = str_replace(
                             '{$a->duedate}',
                             userdate($plannerdata->duedate,

@@ -83,10 +83,10 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                             if ($deletedactivityemail) {
                                 $subject = $deletedactivityemailsubject;
                                 foreach ($teachers as $teacher) {
-                                    $teacher = \core_user::get_user($teacher->id);
+                                    $tmpteacher = \core_user::get_user($teacher->id);
                                     $deletedactivityemail = str_replace(
                                         '{$a->firstname}',
-                                        $teacher->firstname,
+                                        $tmpteacher->firstname,
                                         $deletedactivityemail
                                     );
                                     $deletedactivityemail = str_replace(
@@ -117,7 +117,7 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                                     $eventdata->courseid          = $courseid;
                                     $eventdata->modulename        = 'planner';
                                     $eventdata->userfrom          = $supportuser;
-                                    $eventdata->userto            = $teacher;
+                                    $eventdata->userto            = $tmpteacher;
                                     $eventdata->subject           = $subject;
                                     $eventdata->fullmessage       = $messagetext;
                                     $eventdata->fullmessageformat = FORMAT_PLAIN;
@@ -146,10 +146,10 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                             if ($deletedactivitystudentemail) {
                                 $subject = $deletedactivitystudentsubject;
                                 foreach ($students as $student) {
-                                    $student = \core_user::get_user($student->id);
+                                    $tmpstudent = \core_user::get_user($student->id);
                                     $deletedactivitystudentemail = str_replace(
                                         '{$a->firstname}',
-                                        $student->firstname,
+                                        $tmpstudent->firstname,
                                         $deletedactivitystudentemail
                                     );
                                     $deletedactivitystudentemail = str_replace(
@@ -170,7 +170,7 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                                     $eventdata->courseid          = $courseid;
                                     $eventdata->modulename        = 'planner';
                                     $eventdata->userfrom          = $supportuser;
-                                    $eventdata->userto            = $student;
+                                    $eventdata->userto            = $tmpstudent;
                                     $eventdata->subject           = $subject;
                                     $eventdata->fullmessage       = $messagetext;
                                     $eventdata->fullmessageformat = FORMAT_PLAIN;
