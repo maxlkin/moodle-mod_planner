@@ -64,8 +64,8 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                 $supportuser = \core_user::get_support_user();
                 $deletedactivityemailsubject = get_string('deletedactivityemailsubject', 'mod_planner');
                 $deletedactivitystudentsubject = get_string('deletedactivitystudentsubject', 'mod_planner');
-                $deletedactivityemail = get_config('planner', 'deletedactivityemail');
-                $deletedactivitystudentemail = get_config('planner', 'deletedactivitystudentemail');
+                $deletedactivityemailtemplate = get_config('planner', 'deletedactivityemail');
+                $deletedactivitystudentemailtemplate = get_config('planner', 'deletedactivitystudentemail');
 
                 foreach ($allplanners as $planner) {
                     $cminfo = $DB->get_record('course_modules', ['id' => $planner->activitycmid]);
@@ -80,6 +80,7 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                         }
                         $teachers = reset($teachers);
                         if ($teachers) {
+                            $deletedactivityemail = $deletedactivityemailtemplate;
                             if ($deletedactivityemail) {
                                 $subject = $deletedactivityemailsubject;
                                 foreach ($teachers as $teacher) {
@@ -143,6 +144,7 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                         }
                         $students = reset($students);
                         if ($students) {
+                            $deletedactivitystudentemail = $deletedactivitystudentemailtemplate;
                             if ($deletedactivitystudentemail) {
                                 $subject = $deletedactivitystudentsubject;
                                 foreach ($students as $student) {

@@ -55,7 +55,7 @@ class cron_task extends \core\task\scheduled_task {
         // Now when the scheduled allocator had a chance to do its job.
         // Check if there are some planners to switch into the assessment phase.
         $currentime = time();
-        $upcomingemail = get_config('planner', 'upcomingemail');
+        $upcomingemailtemplate = get_config('planner', 'upcomingemail');
         $missedemail = get_config('planner', 'dueemail');
         $frequencyemail = get_config('planner', 'frequencyemail');
         $nextdate = strtotime("+" . $frequencyemail . " days", $currentime);
@@ -81,6 +81,8 @@ class cron_task extends \core\task\scheduled_task {
                 $missedemailsubject = get_string('missedemailsubject', 'mod_planner');
                 $upcomingemailsubject = get_string('upcomingemailsubject', 'mod_planner');
                 foreach ($allplanner as $plannerdata) {
+                    // Ensure email template is renewed from original for each user.
+                    $upcomingemail = $upcomingemailtemplate;
                     $user = $user = \core_user::get_user($plannerdata->userid);
                     $sql = 'SELECT cm.id,m.name AS modulename,cm.instance
 					          FROM {course_modules} cm

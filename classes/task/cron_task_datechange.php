@@ -60,11 +60,18 @@ class cron_task_datechange extends \core\task\scheduled_task {
 
             if ($allplanners) {
                 $teacherroleids = $DB->get_records('role', ['archetype' => 'editingteacher']);
-                $teachers = [];
                 $supportuser = \core_user::get_support_user();
                 $changedateemailsubject = get_string('changedateemailsubject', 'mod_planner');
-                $changedateemail = get_config('planner', 'changedateemailtemplate');
+                $changedateemailtemplate = get_config('planner', 'changedateemailtemplate');
+
+                $task = \core\task\manager::get_scheduled_task('mod_planner\task\cron_task_datechange');
+                $lastruntime = $task->get_last_run_time();
+
                 foreach ($allplanners as $planner) {
+                    // Reinitialise $teachers array for each planner, needs to be course specific.
+                    $teachers = [];
+                    // Ensure email template is renewed from original for each planner.
+                    $changedateemail = $changedateemailtemplate;
                     $sql = 'SELECT cm.id,cm.instance,cm.module,m.name
                               FROM {course_modules} cm
                               JOIN {modules} m ON (m.id = cm.module)
@@ -79,8 +86,10 @@ class cron_task_datechange extends \core\task\scheduled_task {
                             $starttime = $modulename->timeopen;
                             $endtime = $modulename->timeclose;
                         }
+                        $timemodified = $modulename->timemodified;
 
-                        if (($starttime != $planner->timeopen) || ($endtime != $planner->timeclose)) {
+                        if (($timemodified >= $lastruntime)
+                        && (($starttime != $planner->timeopen) || ($endtime != $planner->timeclose))) {
                             $courseid = $planner->course;
                             $coursecontext = \context_course::instance($courseid);
                             foreach ($teacherroleids as $teacherroleid) {

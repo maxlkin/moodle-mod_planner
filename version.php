@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_planner'; // Full name of the plugin (used for diagnostics).
 $plugin->release = '1.401.01';
-$plugin->version = 2023041702;
+$plugin->version = 2023041703;
 $plugin->requires  = 2022112800; // Moodle 4.1 and higher.
 $plugin->cron      = 0;
 $plugin->maturity = MATURITY_STABLE;
