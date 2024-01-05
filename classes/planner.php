@@ -561,6 +561,14 @@ class planner {
                  WHERE cm.id = :cmid';
         $cminfoactivity = $DB->get_record_sql($sql, ['cmid' => $this->activitycmid]);
 
+        if (!$cminfoactivity) {
+            throw new \moodle_exception(
+                'relatedactivitynotexistdelete',
+                'planner',
+                new \moodle_url("/course/view.php?id=$this->courseid")
+            );
+        }
+
         $modinfo = get_fast_modinfo($this->courseid);
         foreach ($modinfo->instances as $modname => $modinstances) {
             foreach ($modinstances as $cmnew) {
