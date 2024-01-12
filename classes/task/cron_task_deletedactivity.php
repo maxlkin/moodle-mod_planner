@@ -67,10 +67,26 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                 $deletedactivityemailtemplate = get_config('planner', 'deletedactivityemail');
                 $deletedactivitystudentemailtemplate = get_config('planner', 'deletedactivitystudentemail');
 
-                foreach ($allplanners as $planner) {
-                    $cminfo = $DB->get_record('course_modules', ['id' => $planner->activitycmid]);
-                    if ((!$cminfo) || ($cminfo->deletioninprogress == '1')) {
+                // Logic to detect last cron run, then only find activities deleted, via logs, since then.
+                // This is to avoid spam emailing users indefinately when activity isn't found.
+                $task = \core\task\manager::get_scheduled_task('mod_planner\task\cron_task_deletedactivity');
+                $lastruntime = $task->get_last_run_time();
+                mtrace('Last run time = ' . $lastruntime);
+                // Get all possible log tables in use.
+                $logtables = (get_log_manager())->get_readers('\core\log\sql_internal_table_reader');
 
+                foreach ($allplanners as $planner) {
+                    // Look through all of the site log systems, per planner.
+                    $selectwhere = 'target = ? AND action = ? AND objectid = ? AND timecreated > ?';
+                    $inparams = ['course_module', 'deleted', $planner->activitycmid, $lastruntime];
+                    foreach ($logtables as $log => $logdetails) {
+                        // Get all matching events, using the log API.
+                        // SHOULD only be one instance.
+                        $events = $logdetails->get_events_select($selectwhere, $inparams, 'id DESC', 0, 0);
+                    }
+
+                    // If activity deletion event detected since last cron run, then process.
+                    if ($events) {
                         $courseid = $planner->course;
                         $course = $DB->get_record('course', ['id' => $courseid]);
                         $coursecontext = \context_course::instance($courseid);
