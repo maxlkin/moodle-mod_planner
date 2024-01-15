@@ -28,7 +28,7 @@ This plugin has been developed to work on Moodle releases 4.01, 4.02, and 4.02.
 ## Development ##
 This plugin has been developed and is maintained by Brickfield Education Labs on behalf of DCU Teaching Enhancement Unit. Brickfield Education Lab is unable to provide support or respond to queries/feature requests for this plugin.
 
-If you have queries, or wish to contribute funding to the ongoing development of features and / or maintenance of the plugin, please contact [DCU Library support](mailto:library@dcu.ie) with the subject line "Moodle Planner".
+If you have queries, or wish to contribute funding to the ongoing development of features and / or maintenance of the plugin, please contact [DCU Teaching Enhancement Unit](mailto:teaching.enhancement@dcu.ie) with the subject line "Moodle Planner".
 
 ## Documentation ##
 All documentation for this plugin is maintained at the [Brickfield planner user guide site](https://www.brickfield.ie/plannerhelpdocs).
