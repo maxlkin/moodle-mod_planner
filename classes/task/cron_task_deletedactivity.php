@@ -96,10 +96,11 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                         }
                         $teachers = reset($teachers);
                         if ($teachers) {
-                            $deletedactivityemail = $deletedactivityemailtemplate;
-                            if ($deletedactivityemail) {
+                            if ($deletedactivityemailtemplate) {
                                 $subject = $deletedactivityemailsubject;
                                 foreach ($teachers as $teacher) {
+                                    // Ensure email templates are renewed from original for each user.
+                                    $deletedactivityemail = $deletedactivityemailtemplate;
                                     $tmpteacher = \core_user::get_user($teacher->id);
                                     $deletedactivityemail = str_replace(
                                         '{$a->firstname}',
@@ -160,10 +161,11 @@ class cron_task_deletedactivity extends \core\task\scheduled_task {
                         }
                         $students = reset($students);
                         if ($students) {
-                            $deletedactivitystudentemail = $deletedactivitystudentemailtemplate;
-                            if ($deletedactivitystudentemail) {
+                            if ($deletedactivitystudentemailtemplate) {
                                 $subject = $deletedactivitystudentsubject;
                                 foreach ($students as $student) {
+                                    // Ensure email templates are renewed from original for each user.
+                                    $deletedactivitystudentemail = $deletedactivitystudentemailtemplate;
                                     $tmpstudent = \core_user::get_user($student->id);
                                     $deletedactivitystudentemail = str_replace(
                                         '{$a->firstname}',

@@ -70,8 +70,6 @@ class cron_task_datechange extends \core\task\scheduled_task {
                 foreach ($allplanners as $planner) {
                     // Reinitialise $teachers array for each planner, needs to be course specific.
                     $teachers = [];
-                    // Ensure email template is renewed from original for each planner.
-                    $changedateemail = $changedateemailtemplate;
                     $sql = 'SELECT cm.id,cm.instance,cm.module,m.name
                               FROM {course_modules} cm
                               JOIN {modules} m ON (m.id = cm.module)
@@ -99,9 +97,11 @@ class cron_task_datechange extends \core\task\scheduled_task {
                                 }
                             }
                             if ($teachers) {
-                                if ($changedateemail) {
+                                if ($changedateemailtemplate) {
                                     $subject = $changedateemailsubject;
                                     foreach ($teachers as $teacher) {
+                                        // Ensure email template is renewed from original for each teacher.
+                                        $changedateemail = $changedateemailtemplate;
                                         $tmpteacher = \core_user::get_user($teacher->id);
                                         $changedateemail = str_replace(
                                             '{$a->firstname}',
