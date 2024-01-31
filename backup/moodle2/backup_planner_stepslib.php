@@ -74,8 +74,8 @@ class backup_planner_activity_structure_step extends backup_activity_structure_s
 
         $plannerusersteps = new backup_nested_element('plannerusersteps');
 
-        $planneruserstep = new backup_nested_element('
-            planneruserstep',
+        $planneruserstep = new backup_nested_element(
+            'planneruserstep',
             ['id'],
             ['userid', 'timestart', 'duedate', 'completionstatus', 'timemodified']
         );
